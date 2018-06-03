@@ -1,0 +1,11 @@
+To i
+---
+ - hosts: all
+   tasks:
+     - name: To install the tomcat
+       yum : name=tomcat7 state=installed
+     - name: to start the tomcat server
+       service: name=tomcat  state=started
+         
+ 
+SYSTRAC

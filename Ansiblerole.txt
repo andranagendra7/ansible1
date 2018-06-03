@@ -1,0 +1,74 @@
+Ansible roles:
+
+step 1: first we create a role playbook
+
+
+vi role.yml
+
+---
+ - hosts: all
+   roles:
+   - httpd
+   - nginx
+
+
+step 2: we create a roles directory
+
+
+mkdir roles
+
+cd roles
+
+step 3: now we create 
+
+
+
+
+
+---
+ - hosts: all
+   tasks:
+     - name: to install apache
+       yum: pkg=httpd state=insalled
+     - name: To install php
+       yum: name=php state=present
+     - name: To start apache service
+       service: name=httpd state=running
+     - name: To copy file
+       copy: src=/root/info.php dest=/var/www/html/info.php
+
+
+error:
+
+ERROR! no action detected in task. This often indicates a misspelled module name, or incorrect module path.
+
+The error appears to have been in '/root/roles/httpd/tasks/main.yml': line 3, column 4, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+---
+ - hosts: all
+   ^ here
+
+
+The error appears to have been in '/root/roles/httpd/tasks/main.yml': line 3, column 4, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+---
+ - hosts: all
+   ^ here
+
+exception type: <class 'ansible.errors.AnsibleParserError'>
+exception: no action detected in task. This often indicates a misspelled module name, or incorrect module path.
+
+The error appears to have been in '/root/roles/httpd/tasks/main.yml': line 3, column 4, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+---
+ - hosts: all
+   ^ here

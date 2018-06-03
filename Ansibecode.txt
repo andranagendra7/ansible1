@@ -1,0 +1,198 @@
+ansible code:
+
+root@ip-172-31-73-183:~/playbook# cat file.yml p2.yml p3.yml
+
+
+Task 1: To create a file
+
+---
+  - hosts: all
+    tasks:
+    - name: TO create a file
+      file:
+        path: /tmp/nag
+   
+        state: touch
+
+task 2:
+
+---
+ - hosts: dev
+   tasks:
+    - file:
+       path: /etc/foo.conf
+       state: touch
+       owner: root
+       group: root
+       mode: 0644
+
+task 3:
+---
+ - hosts: all
+   tasks:
+    - file:
+       path: /etc/kelly
+       state: directory
+       owner: root
+       group: root
+       mode: 0644
+
+task 4:
+
+
+packages playbook:
+
+vi nginx.yml
+
+
+---
+ 
+ - hosts: all
+   tasks:
+     - name: Installs nginx web server
+       apt: pkg=nginx state=installed update_cache=true
+       notify:
+         - start nginx
+
+   handlers:
+      - name: start nginx
+        service: name=nginx state=started
+
+
+task 5:
+
+To remove the package:
+
+---
+ - hosts: dev
+   tasks:
+    - name: To  remove a package
+      apt: pkg=apache2 state=absent
+
+
+task 6:
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       user: name=nagendra uid=566 group=root
+
+task 7:
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO delete  a user
+       user: name=nagendra state=absent
+  
+
+task 8: To create a group
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       group: name=nagendra  state=present
+
+task 9: user create and password
+
+varibles passing:
+----------------
+
+ - hosts: all
+   user: root
+   vars:
+     password: 1741049991
+   tasks:
+     - name: To create user and password
+       user: name=nagendra password={{password}}
+
+
+
+
+task 10:
+
+LOOPs:
+
+
+To install the package by using loops
+-------------------------------------
+ - hosts: dev
+   tasks:
+     - name: To in httpd package
+       yum: pkg=httpd state=installed
+     - name: To install multiple packages
+       yum: name={{item}} state=installed
+       with_items:
+         - php-xml
+         - php
+         - php-zip
+         - php-mbstring
+         - php-mysqlnd
+         - php-gd
+
+
+
+
+task 11:
+
+
+---
+ - hosts: web
+   tasks:
+     - name: To in httpd package
+       apt: pkg=httpd state=installed
+     - name: To install multiple packages
+      apt: name={{item}} state=installed
+       with_items:
+         - php-xml
+         - php
+         - php-zip
+         - php-mbstring
+         - php-mysqlnd
+         - php-gd
+
+
+
+task 12:
+
+---
+ - hosts : all
+   tasks :
+
+    - name : To install nginx 
+      apt  : pkg=nginx  state=installed update_cache=true
+      
+      notify:
+        - start nginx
+
+  handlers :
+    - name    : To start the nginx
+    - service : name=nginx state=started
+
+ 
+             
+ 1
+  2
+  3 ---
+  4  - hosts: dev
+  5    tasks:
+  6      - name: To  install a package
+  7
+  8        apt: pkg=apache2 state=installed
+  9      - name: TO start the package
+ 10        service: name=apache2 state=running
+ 11      - name: to copy file
+ 12        copy: src=/root/playbook/index.html dest=/var/www/html
+ 13      - name: To now notify
+ 14        notify:
+ 15          - restart apache2
+ 16        handler:
+ 17         - name: to restart apache service
+ 18           service: name=apache2 state=restarted
+
+

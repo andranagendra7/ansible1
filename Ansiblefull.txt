@@ -1,0 +1,1476 @@
+										Ansible:
+									      ============
+
+
+Ansible setup :
+===============
+
+
+Ansible installation on ubuntu:
+=============================
+
+step 1:
+
+ sudo apt-get update
+
+step 2: now we install python
+
+
+ apt-get install python -y
+
+step 3:
+
+apt-get install software-properties-common -y
+
+step 4:
+
+sudo apt-add-repository ppa:ansible/ansible
+
+step 5:
+
+apt-get upate
+
+step 6:
+
+apt-get install -y ansible 
+
+step1 : first of all, we generate ssh key
+=====
+
+>> ssh-keygen
+
+3 enter's
+
+step 2:
+
+now copy ssh public key:
+
+cd /root/.shh
+
+>> cat id_rsa.pub
+
+=========================================================================================================================================================================
+
+Ansible installation on  Centos:
+===============================
+
+step1 : first of all, now we  generate ssh key on  ansible hostmachine
+
+
+>> ssh-keygen
+
+3 enter's
+
+step 2:
+
+now copy ssh public key:
+
+cd /root/.shh
+
+>> cat id_rsa.pub
+
+  
+step 3: To install ansible package and Configure host machine 
+
+
+>>>> yum install --enablerepo=epel -y install ansible openssh-clients
+
+
+>> ansible --version
+
+
+step 2: now we  generate ssh key at ansible hostmachine
+
+
+ssh-keygen
+
+
+
+step 3: To add remotemachine's ip inside ansible inventory file:
+
+ 
+vi /etc/ansible/hosts
+
+
+[dev]
+
+54.172.182.170
+54.88.122.37
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Remotemachine;
+=============
+
+
+step 1:
+
+ vi /root/.ssh/authorized_keys
+
+in this location we paste .ssh key
+
+:wq!
+
+
+step 2: ssh_config file we have modify
+
+vi /etc/ssh/sshd_config
+
+
+#PermitRootLogin yes --->default we have to un comment this line
+
+
+PermitRootLogin yes
+
+
+PasswordAuthentication yes -----> default we have to un comment this line
+
+PasswordAuthentication yes
+
+3) now we restart sshd service
+
+service sshd restart
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ansible commands:
+-----------------
+
+
+ansible --version                  -----> TO check ansible version
+
+  
+ansible -m ping all                -----> To test the connection host machine to remote machine's
+ 
+
+ansible -m ping [ groupname ]      -----> To test the connection host machine to perticualr remote machine's
+
+ansible [group name] -m ping       ------> To test the connection host machine to remote machine's
+
+ansible-playbook playbookname.yml  ------> To execute playbook 
+
+
+ansible-playbook playbookname.yml --syntax-check ----> To check playbook syntax
+
+
+ansible-playbook p3.yml -vvv ---> To give full details of excution process
+ 
+
+ansible-playbook p3.yml -vvvv
+
+
+ansible adoc commands:
+======================
+
+
+1 >>> ansible -m ping localhost ----> To check the connecton
+
+
+if we want to check list of module's by using bellow command
+
+ >>>> ansible-doc -l | more l
+
+
+ansible-doc -l | wc -l ----> To display list of module's 
+
+460
+
+ansible-doc -l | wc
+
+    460    3394   75583
+
+ansible-doc -s << modulename >> ---> To perticular module information
+
+example:
+
+ansible-doc -s yum
+
+ansible -m ping all -o  ---> To display output single line
+
+
+ ansible -m shell dev -a "uname -a"                   ----> shell module
+
+ ansible -m shell dev -a "mkdir nag"                  ----> To create directory
+ 
+ ansible -m shell dev -a "find -name nag"             ----> To find a directory
+
+ ansible -m yum web -a "pkg=httpd state=installed"    ----> TO install the packge on remote machine's
+
+ ansible -m shell dev -a "ps -ef | grep httpd"        ----> To search perticular service on remote machine's
+ 
+ ansible -m service web -a "name=httpd state=stopped" ----> to stop a httpd service
+
+ ansible -m service web -a "name=httpd state=running" ----> To start the httpd service
+
+
+ running,started,stopped,restarted,reloaded, got: start
+
+
+
+========================================================================================================================================================================================================================================
+
+
+TO check ansible version:
+
+ 
+root@ip-172-31-73-183:~# ansible --version
+
+ansible 2.0.0.2
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = Default w/o overrides
+root@ip-172-31-73-183:~# ps -ef | grep ansible
+root      3328  1462  0 05:09 pts/0    00:00:00 grep --color=auto ansible
+
+
+
+sshkey generation:
+==================
+
+step 7: now we  generate ssh key at ansible hostmachine
+
+
+ssh-keygen
+
+step 8: now we copy ssh key hostmachine to remote machine
+
+cat /root/.ssh/id_rsa.pub
+
+
+step 9: we cofigure ansible inventory file
+
+vi /etc/ansible/hosts
+
+
+[dev]
+
+52.87.245.220
+
+[web]
+
+174.129.172.52
+
+
+:wq!
+
+
+step 10: now we set environment varible
+
+export ANSIBLE_HOSTS=/etc/ansible/hosts
+
+
+step 11: now add server look like a node
+
+vi /etc/ansible/hosts
+
+localhost ansible_connection=local
+
+============================================================================================================================================================================
+
+
+OUPUT  OF HOSTMACHINE:
+======================
+
+Now we check connection in between hostmachine to remotemachine;
+
+
+>> ansible -m ping all
+
+
+error 1: on ubuntu machine don't have python package
+=======
+
+
+
+52.87.245.220 | FAILED! => {
+    "changed": false,
+    "failed": true,
+    "module_stderr": "",
+    "module_stdout": "bash: /usr/bin/python: No such file or directory\r\n",
+    "msg": "MODULE FAILURE",
+    "parsed": false
+}
+
+
+correct:
+
+174.129.172.52 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+52.87.245.220 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+
+
+
+=======================================================================================================================================================================
+
+
+
+
+
+
+Remote machine:
+===============
+
+vi /etc/ssh/sshd_config
+
+
+#PermitRootLogin yes   ----> To remove uncoment
+
+
+PermitRootLogin yes
+
+
+#PasswordAuthentication yes
+
+
+PasswordAuthentication yes
+
+
+2)
+
+#PasswordAuthentication yes ----->
+
+PasswordAuthentication yes
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+To check Linux machine version:
+
+
+
+ cat /etc/*-release
+
+cat /etc/redhat-release
+
+
+centos :
+
+
+
+ cat /etc/issue
+Amazon Linux AMI release 2017.09
+Kernel \r on an \m
+
+
+redhat:
+
+
+cat /etc/*_version
+
+
+
+ubuntu:
+
+
+root@rm2:~# cat /etc/*_version
+stretch/sid
+Ubuntu 16.04.3 LTS (Xenial Xerus)
+
+
+TO ssh key hostmachine to remote machine:
+========================================
+
+
+ssh-copy-id user@hostname.example.com
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+output:
+
+
+[root@host ~]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:U9Zmjc2DPPUK6ym8bwOQhuNONPYN67RiY6Yb16NqzuM root@host
+The key's randomart image is:
++---[RSA 2048]----+
+|              .  |
+|           o B . |
+|       . .o X = .|
+|      * =o o + o |
+|     + =S=  . .  |
+|      o.+oo. .   |
+|    .o.oo.o.o    |
+|   .ooB.o. oo    |
+|   +EO.o  .o..   |
++----[SHA256]-----+
+
+
+========================================================================================================================================================================
+
+
+coding part:
+===========
+
+task 1: To create a file by using playbook
+
+file creation;
+=============
+
+vi file.yml
+
+---
+  - hosts: all
+    tasks:
+    - name: TO create a file 
+      file:
+        path: /tmp/nag
+        state: touch
+
+
+-----------------------------------------
+method 2:
+ ---
+  - hosts: all
+    tasks:
+    - name: TO create a file
+      file: path: /tmp/nag state: touch
+      
+
+ ansible-playbook file.yml --syntax-check
+
+
+>>>> ansible-playbook file.yml
+
+==================================================================================================================================================================================
+
+task2 : To create a file with permisson
+
+
+---
+ - hosts: dev  --->here [ s is missing first  ]
+   tasks: -----> here s missing
+     
+    - name: To create  a file with permission's
+    - file:
+       path: /etc/foo.conf
+       state:touch
+       owner: foo
+       group: foo
+       mode: 0644
+
+ansible-playbook p2.yml --syntax-check
+
+error:
+
+ERROR! 'host' is not a valid attribute for a Play
+
+The error appears to have been in '/root/playbook/p2.yml': line 4, column 4, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+---
+ - host: dev
+   ^ here
+
+error 2:
+
+
+ERROR! 'task' is not a valid attribute for a Play
+
+The error appears to have been in '/root/playbook/p2.yml': line 4, column 4, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+---
+ - hosts: dev
+   ^ here
+
+correct:
+
+ansible-playbook p2.yml --syntax-check
+
+playbook: p2.yml
+
+
+now we are executing playbook
+
+
+===============================================
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook file.yml --syntax-check
+
+playbook: file.yml
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook file.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+ok: [localhost]
+ok: [52.87.245.220]
+
+TASK [TO create a file] ********************************************************
+changed: [localhost]
+changed: [52.87.245.220]
+changed: [174.129.172.52]
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=1    unreachable=0    failed=0
+52.87.245.220              : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+
+
+task 2:
+
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p2.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+ok: [52.87.245.220]
+
+TASK [file] ********************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "file (/etc/foo.conf) is absent, cannot continue", "path": "/etc/foo.conf", "state": "absent"}
+fatal: [52.87.245.220]: FAILED! => {"changed": false, "failed": true, "msg": "file (/etc/foo.conf) is absent, cannot continue", "path": "/etc/foo.conf", "state": "absent"}
+
+PLAY RECAP *********************************************************************
+52.87.245.220              : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+root@ip-172-31-73-183:~/playbook# vi p2.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p2.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+ok: [52.87.245.220]
+
+TASK [file] ********************************************************************
+changed: [localhost]
+changed: [52.87.245.220]
+
+PLAY RECAP *********************************************************************
+52.87.245.220              : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+
+
+task 3:
+
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p3.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+ok: [localhost]
+ok: [52.87.245.220]
+
+TASK [file] ********************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "gid": 0, "group": "root", "mode": "0644", "msg": "/etc/foo.conf already exists as a file", "owner": "root", "path": "/etc/foo.conf", "size": 0, "state": "file", "uid": 0}
+fatal: [52.87.245.220]: FAILED! => {"changed": false, "failed": true, "gid": 0, "group": "root", "mode": "0644", "msg": "/etc/foo.conf already exists as a file", "owner": "root", "path": "/etc/foo.conf", "size": 0, "state": "file", "uid": 0}
+changed: [174.129.172.52]
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=1    unreachable=0    failed=0
+52.87.245.220              : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+root@ip-172-31-73-183:~/playbook# export ANSIBLE_HOSTS=/etc/ansible/hosts
+root@ip-172-31-73-183:~/playbook# ansible-playbook p3.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+ok: [52.87.245.220]
+ok: [localhost]
+
+TASK [file] ********************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "gid": 0, "group": "root", "mode": "0644", "msg": "/etc/foo.conf already exists as a file", "owner": "root", "path": "/etc/foo.conf", "size": 0, "state": "file", "uid": 0}
+fatal: [52.87.245.220]: FAILED! => {"changed": false, "failed": true, "gid": 0, "group": "root", "mode": "0644", "msg": "/etc/foo.conf already exists as a file", "owner": "root", "path": "/etc/foo.conf", "size": 0, "state": "file", "uid": 0}
+ok: [174.129.172.52]
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=0    unreachable=0    failed=0
+52.87.245.220              : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p3.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+ok: [52.87.245.220]
+ok: [localhost]
+
+TASK [file] ********************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "gid": 0, "group": "root", "mode": "0644", "msg": "/etc/foo.conf already exists as a file", "owner": "root", "path": "/etc/foo.conf", "size": 0, "state": "file", "uid": 0}
+fatal: [52.87.245.220]: FAILED! => {"changed": false, "failed": true, "gid": 0, "group": "root", "mode": "0644", "msg": "/etc/foo.conf already exists as a file", "owner": "root", "path": "/etc/foo.conf", "size": 0, "state": "file", "uid": 0}
+ok: [174.129.172.52]
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=0    unreachable=0    failed=0
+52.87.245.220              : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+root@ip-172-31-73-183:~/playbook# vi /etc/ansible/hosts
+root@ip-172-31-73-183:~/playbook# ls /etc/foo.conf
+/etc/foo.conf
+
+
+task 3:
+
+root@ip-172-31-73-183:~/playbook# vi p3.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p3.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+ok: [localhost]
+ok: [52.87.245.220]
+
+TASK [file] ********************************************************************
+changed: [localhost]
+changed: [52.87.245.220]
+changed: [174.129.172.52]
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=1    unreachable=0    failed=0
+52.87.245.220              : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+task 4:
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p3.yml -v
+Using /etc/ansible/ansible.cfg as config file
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+ok: [52.87.245.220]
+ok: [localhost]
+
+TASK [file] ********************************************************************
+ok: [localhost] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+ok: [52.87.245.220] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+ok: [174.129.172.52] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=0    unreachable=0    failed=0
+52.87.245.220              : ok=2    changed=0    unreachable=0    failed=0
+localhost                  : ok=2    changed=0    unreachable=0    failed=0
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p3.yml -vv
+Using /etc/ansible/ansible.cfg as config file
+1 plays in p3.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+ok: [52.87.245.220]
+ok: [localhost]
+
+TASK [file] ********************************************************************
+ok: [localhost] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+ok: [52.87.245.220] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+ok: [174.129.172.52] => {"changed": false, "gid": 0, "group": "root", "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=0    unreachable=0    failed=0
+52.87.245.220              : ok=2    changed=0    unreachable=0    failed=0
+localhost                  : ok=2    changed=0    unreachable=0    failed=0
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p3.yml -vvv
+Using /etc/ansible/ansible.cfg as config file
+1 plays in p3.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+<174.129.172.52> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+ESTABLISH LOCAL CONNECTION FOR USER: root
+localhost EXEC ( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.05-196971672434987 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.05-196971672434987 )" )
+<174.129.172.52> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 174.129.172.52 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.05-134676586963735 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.05-134676586963735 )" )'
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.05-23535451501422 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.05-23535451501422 )" )'
+localhost PUT /tmp/tmplot4X2 TO /root/.ansible/tmp/ansible-tmp-1511418771.05-196971672434987/setup
+localhost EXEC LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511418771.05-196971672434987/setup; rm -rf "/root/.ansible/tmp/ansible-tmp-1511418771.05-196971672434987/" > /dev/null 2>&1
+<52.87.245.220> PUT /tmp/tmpT1NdU9 TO /root/.ansible/tmp/ansible-tmp-1511418771.05-23535451501422/setup
+<52.87.245.220> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[52.87.245.220]'
+<174.129.172.52> PUT /tmp/tmpTz62sO TO /root/.ansible/tmp/ansible-tmp-1511418771.05-134676586963735/setup
+<174.129.172.52> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[174.129.172.52]'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511418771.05-23535451501422/setup; rm -rf "/root/.ansible/tmp/ansible-tmp-1511418771.05-23535451501422/" > /dev/null 2>&1'
+<174.129.172.52> ESTABLISH SSH CONNECTION FOR USER: None
+<174.129.172.52> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 174.129.172.52 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511418771.05-134676586963735/setup; rm -rf "/root/.ansible/tmp/ansible-tmp-1511418771.05-134676586963735/" > /dev/null 2>&1'
+ok: [174.129.172.52]
+ok: [52.87.245.220]
+ok: [localhost]
+
+TASK [file] ********************************************************************
+task path: /root/playbook/p3.yml:6
+<174.129.172.52> ESTABLISH SSH CONNECTION FOR USER: None
+<174.129.172.52> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 174.129.172.52 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.57-261455228670210 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.57-261455228670210 )" )'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.58-177291162859832 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.58-177291162859832 )" )'
+ESTABLISH LOCAL CONNECTION FOR USER: root
+localhost EXEC ( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.59-159950793235968 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511418771.59-159950793235968 )" )
+localhost PUT /tmp/tmp24dMd8 TO /root/.ansible/tmp/ansible-tmp-1511418771.59-159950793235968/file
+localhost EXEC LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511418771.59-159950793235968/file; rm -rf "/root/.ansible/tmp/ansible-tmp-1511418771.59-159950793235968/" > /dev/null 2>&1
+<52.87.245.220> PUT /tmp/tmp9mV5Rv TO /root/.ansible/tmp/ansible-tmp-1511418771.58-177291162859832/file
+<52.87.245.220> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[52.87.245.220]'
+<174.129.172.52> PUT /tmp/tmpmQzR_1 TO /root/.ansible/tmp/ansible-tmp-1511418771.57-261455228670210/file
+<174.129.172.52> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[174.129.172.52]'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511418771.58-177291162859832/file; rm -rf "/root/.ansible/tmp/ansible-tmp-1511418771.58-177291162859832/" > /dev/null 2>&1'
+<174.129.172.52> ESTABLISH SSH CONNECTION FOR USER: None
+<174.129.172.52> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 174.129.172.52 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511418771.57-261455228670210/file; rm -rf "/root/.ansible/tmp/ansible-tmp-1511418771.57-261455228670210/" > /dev/null 2>&1'
+ok: [localhost] => {"changed": false, "gid": 0, "group": "root", "invocation": {"module_args": {"backup": null, "content": null, "delimiter": null, "diff_peek": null, "directory_mode": null, "follow": false, "force": false, "group": "root", "mode": 420, "original_basename": null, "owner": "root", "path": "/etc/kelly", "recurse": false, "regexp": null, "remote_src": null, "selevel": null, "serole": null, "setype": null, "seuser": null, "src": null, "state": "directory", "validate": null}, "module_name": "file"}, "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+ok: [52.87.245.220] => {"changed": false, "gid": 0, "group": "root", "invocation": {"module_args": {"backup": null, "content": null, "delimiter": null, "diff_peek": null, "directory_mode": null, "follow": false, "force": false, "group": "root", "mode": 420, "original_basename": null, "owner": "root", "path": "/etc/kelly", "recurse": false, "regexp": null, "remote_src": null, "selevel": null, "serole": null, "setype": null, "seuser": null, "src": null, "state": "directory", "validate": null}, "module_name": "file"}, "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+ok: [174.129.172.52] => {"changed": false, "gid": 0, "group": "root", "invocation": {"module_args": {"backup": null, "content": null, "delimiter": null, "diff_peek": null, "directory_mode": null, "follow": false, "force": false, "group": "root", "mode": 420, "original_basename": null, "owner": "root", "path": "/etc/kelly", "recurse": false, "regexp": null, "remote_src": null, "selevel": null, "serole": null, "setype": null, "seuser": null, "src": null, "state": "directory", "validate": null}, "module_name": "file"}, "mode": "0644", "owner": "root", "path": "/etc/kelly", "size": 4096, "state": "directory", "uid": 0}
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=0    unreachable=0    failed=0
+52.87.245.220              : ok=2    changed=0    unreachable=0    failed=0
+localhost                  : ok=2    changed=0    unreachable=0    failed=0
+
+
+
+task 4:
+
+
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p4.yml -vvv
+Using /etc/ansible/ansible.cfg as config file
+1 plays in p4.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+<174.129.172.52> ESTABLISH SSH CONNECTION FOR USER: None
+ESTABLISH LOCAL CONNECTION FOR USER: root
+localhost EXEC ( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.22-219820625620741 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.22-219820625620741 )" )
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<174.129.172.52> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 174.129.172.52 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.22-237191335231838 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.22-237191335231838 )" )'
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.22-200506197938855 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.22-200506197938855 )" )'
+localhost PUT /tmp/tmpfBUIjb TO /root/.ansible/tmp/ansible-tmp-1511419090.22-219820625620741/setup
+localhost EXEC LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511419090.22-219820625620741/setup; rm -rf "/root/.ansible/tmp/ansible-tmp-1511419090.22-219820625620741/" > /dev/null 2>&1
+<52.87.245.220> PUT /tmp/tmppgLN8b TO /root/.ansible/tmp/ansible-tmp-1511419090.22-200506197938855/setup
+<52.87.245.220> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[52.87.245.220]'
+<174.129.172.52> PUT /tmp/tmpozQdj6 TO /root/.ansible/tmp/ansible-tmp-1511419090.22-237191335231838/setup
+<174.129.172.52> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[174.129.172.52]'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511419090.22-200506197938855/setup; rm -rf "/root/.ansible/tmp/ansible-tmp-1511419090.22-200506197938855/" > /dev/null 2>&1'
+<174.129.172.52> ESTABLISH SSH CONNECTION FOR USER: None
+<174.129.172.52> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 174.129.172.52 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511419090.22-237191335231838/setup; rm -rf "/root/.ansible/tmp/ansible-tmp-1511419090.22-237191335231838/" > /dev/null 2>&1'
+ok: [174.129.172.52]
+ok: [52.87.245.220]
+ok: [localhost]
+
+TASK [file] ********************************************************************
+task path: /root/playbook/p4.yml:6
+<174.129.172.52> ESTABLISH SSH CONNECTION FOR USER: None
+<174.129.172.52> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 174.129.172.52 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.75-26529185947563 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.75-26529185947563 )" )'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.75-77188219483677 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.75-77188219483677 )" )'
+ESTABLISH LOCAL CONNECTION FOR USER: root
+localhost EXEC ( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.76-249511621451564 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419090.76-249511621451564 )" )
+localhost PUT /tmp/tmp9VTas3 TO /root/.ansible/tmp/ansible-tmp-1511419090.76-249511621451564/file
+localhost EXEC LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511419090.76-249511621451564/file; rm -rf "/root/.ansible/tmp/ansible-tmp-1511419090.76-249511621451564/" > /dev/null 2>&1
+<52.87.245.220> PUT /tmp/tmpWkHEKV TO /root/.ansible/tmp/ansible-tmp-1511419090.75-77188219483677/file
+<52.87.245.220> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[52.87.245.220]'
+<174.129.172.52> PUT /tmp/tmpMGWJM5 TO /root/.ansible/tmp/ansible-tmp-1511419090.75-26529185947563/file
+<174.129.172.52> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[174.129.172.52]'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511419090.75-77188219483677/file; rm -rf "/root/.ansible/tmp/ansible-tmp-1511419090.75-77188219483677/" > /dev/null 2>&1'
+<174.129.172.52> ESTABLISH SSH CONNECTION FOR USER: None
+<174.129.172.52> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 174.129.172.52 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511419090.75-26529185947563/file; rm -rf "/root/.ansible/tmp/ansible-tmp-1511419090.75-26529185947563/" > /dev/null 2>&1'
+ok: [localhost] => {"changed": false, "invocation": {"module_args": {"backup": null, "content": null, "delimiter": null, "diff_peek": null, "directory_mode": null, "follow": false, "force": false, "group": "root", "mode": 420, "original_basename": null, "owner": "root", "path": "/etc/kelly", "recurse": false, "regexp": null, "remote_src": null, "selevel": null, "serole": null, "setype": null, "seuser": null, "src": null, "state": "absent", "validate": null}, "module_name": "file"}, "path": "/etc/kelly", "state": "absent"}
+ok: [52.87.245.220] => {"changed": false, "invocation": {"module_args": {"backup": null, "content": null, "delimiter": null, "diff_peek": null, "directory_mode": null, "follow": false, "force": false, "group": "root", "mode": 420, "original_basename": null, "owner": "root", "path": "/etc/kelly", "recurse": false, "regexp": null, "remote_src": null, "selevel": null, "serole": null, "setype": null, "seuser": null, "src": null, "state": "absent", "validate": null}, "module_name": "file"}, "path": "/etc/kelly", "state": "absent"}
+ok: [174.129.172.52] => {"changed": false, "invocation": {"module_args": {"backup": null, "content": null, "delimiter": null, "diff_peek": null, "directory_mode": null, "follow": false, "force": false, "group": "root", "mode": 420, "original_basename": null, "owner": "root", "path": "/etc/kelly", "recurse": false, "regexp": null, "remote_src": null, "selevel": null, "serole": null, "setype": null, "seuser": null, "src": null, "state": "absent", "validate": null}, "module_name": "file"}, "path": "/etc/kelly", "state": "absent"}
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=0    unreachable=0    failed=0
+52.87.245.220              : ok=2    changed=0    unreachable=0    failed=0
+localhost                  : ok=2    changed=0    unreachable=0    failed=0
+
+
+==========================================
+
+adoc commands history:
+
+
+root@ip-172-31-73-183:~/playbook# ansible -m ping localhost
+localhost | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+root@ip-172-31-73-183:~/playbook# ansible -m ping localhost -vv
+Using /etc/ansible/ansible.cfg as config file
+localhost | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+root@ip-172-31-73-183:~/playbook# ansible -m ping localhost -vvv
+Using /etc/ansible/ansible.cfg as config file
+ESTABLISH LOCAL CONNECTION FOR USER: root
+localhost EXEC ( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419265.49-267513801025181 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511419265.49-267513801025181 )" )
+localhost PUT /tmp/tmpwIOwDm TO /root/.ansible/tmp/ansible-tmp-1511419265.49-267513801025181/ping
+localhost EXEC LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511419265.49-267513801025181/ping; rm -rf "/root/.ansible/tmp/ansible-tmp-1511419265.49-267513801025181/" > /dev/null 2>&1
+localhost | SUCCESS => {
+    "changed": false,
+    "invocation": {
+        "module_args": {
+            "data": null
+        },
+        "module_name": "ping"
+    },
+    "ping": "pong"
+}
+
+
+================================
+
+root@ip-172-31-73-183:~/playbook# ansible -m ping all -o
+localhost | SUCCESS => {"changed": false, "ping": "pong"}
+174.129.172.52 | SUCCESS => {"changed": false, "ping": "pong"}
+52.87.245.220 | SUCCESS => {"changed": false, "ping": "pong"}
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "uname -a"
+localhost | SUCCESS | rc=0 >>
+Linux ip-172-31-73-183 4.4.0-1038-aws #47-Ubuntu SMP Thu Sep 28 20:05:35 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+
+52.87.245.220 | SUCCESS | rc=0 >>
+Linux ip-172-31-69-21 4.4.0-1038-aws #47-Ubuntu SMP Thu Sep 28 20:05:35 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "lsblk"
+localhost | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+
+52.87.245.220 | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "lsblk;df "
+localhost | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks    Used Available Use% Mounted on
+udev              499364       0    499364   0% /dev
+tmpfs             101468    3132     98336   4% /run
+/dev/xvda1       8065444 1277168   6771892  16% /
+tmpfs             507324      68    507256   1% /dev/shm
+tmpfs               5120       0      5120   0% /run/lock
+tmpfs             507324       0    507324   0% /sys/fs/cgroup
+tmpfs             101468       0    101468   0% /run/user/1000
+
+52.87.245.220 | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks   Used Available Use% Mounted on
+udev              499364      0    499364   0% /dev
+tmpfs             101468   3200     98268   4% /run
+/dev/xvda1       8065444 883984   7165076  11% /
+tmpfs             507324      0    507324   0% /dev/shm
+tmpfs               5120      0      5120   0% /run/lock
+tmpfs             507324      0    507324   0% /sys/fs/cgroup
+tmpfs             101468      0    101468   0% /run/user/1000
+tmpfs             101468      0    101468   0% /run/user/0
+
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "lsblk;df;pwd"
+localhost | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks    Used Available Use% Mounted on
+udev              499364       0    499364   0% /dev
+tmpfs             101468    3132     98336   4% /run
+/dev/xvda1       8065444 1277168   6771892  16% /
+tmpfs             507324      68    507256   1% /dev/shm
+tmpfs               5120       0      5120   0% /run/lock
+tmpfs             507324       0    507324   0% /sys/fs/cgroup
+tmpfs             101468       0    101468   0% /run/user/1000
+/root/playbook
+
+52.87.245.220 | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks   Used Available Use% Mounted on
+udev              499364      0    499364   0% /dev
+tmpfs             101468   3200     98268   4% /run
+/dev/xvda1       8065444 883988   7165072  11% /
+tmpfs             507324      0    507324   0% /dev/shm
+tmpfs               5120      0      5120   0% /run/lock
+tmpfs             507324      0    507324   0% /sys/fs/cgroup
+tmpfs             101468      0    101468   0% /run/user/1000
+tmpfs             101468      0    101468   0% /run/user/0
+/root
+
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "lsblk;df;pwd;cal"
+localhost | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks    Used Available Use% Mounted on
+udev              499364       0    499364   0% /dev
+tmpfs             101468    3132     98336   4% /run
+/dev/xvda1       8065444 1277168   6771892  16% /
+tmpfs             507324      68    507256   1% /dev/shm
+tmpfs               5120       0      5120   0% /run/lock
+tmpfs             507324       0    507324   0% /sys/fs/cgroup
+tmpfs             101468       0    101468   0% /run/user/1000
+/root/playbook
+   November 2017
+Su Mo Tu We Th Fr Sa
+          1  2  3  4
+ 5  6  7  8  9 10 11
+12 13 14 15 16 17 18
+19 20 21 22 23 24 25
+26 27 28 29 30
+
+
+52.87.245.220 | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks   Used Available Use% Mounted on
+udev              499364      0    499364   0% /dev
+tmpfs             101468   3200     98268   4% /run
+/dev/xvda1       8065444 883988   7165072  11% /
+tmpfs             507324      0    507324   0% /dev/shm
+tmpfs               5120      0      5120   0% /run/lock
+tmpfs             507324      0    507324   0% /sys/fs/cgroup
+tmpfs             101468      0    101468   0% /run/user/1000
+tmpfs             101468      0    101468   0% /run/user/0
+/root
+   November 2017
+Su Mo Tu We Th Fr Sa
+          1  2  3  4
+ 5  6  7  8  9 10 11
+12 13 14 15 16 17 18
+19 20 21 22 23 24 25
+26 27 28 29 30
+
+
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "lsblk;df;pwd;cal"who
+localhost | FAILED | rc=127 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks    Used Available Use% Mounted on
+udev              499364       0    499364   0% /dev
+tmpfs             101468    3132     98336   4% /run
+/dev/xvda1       8065444 1277168   6771892  16% /
+tmpfs             507324      68    507256   1% /dev/shm
+tmpfs               5120       0      5120   0% /run/lock
+tmpfs             507324       0    507324   0% /sys/fs/cgroup
+tmpfs             101468       0    101468   0% /run/user/1000
+/root/playbook/bin/sh: 1: calwho: not found
+
+52.87.245.220 | FAILED | rc=127 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks   Used Available Use% Mounted on
+udev              499364      0    499364   0% /dev
+tmpfs             101468   3200     98268   4% /run
+/dev/xvda1       8065444 883992   7165068  11% /
+tmpfs             507324      0    507324   0% /dev/shm
+tmpfs               5120      0      5120   0% /run/lock
+tmpfs             507324      0    507324   0% /sys/fs/cgroup
+tmpfs             101468      0    101468   0% /run/user/1000
+tmpfs             101468      0    101468   0% /run/user/0
+/root/bin/sh: 1: calwho: not found
+
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "lsblk;df;pwd;cal;who"
+localhost | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks    Used Available Use% Mounted on
+udev              499364       0    499364   0% /dev
+tmpfs             101468    3132     98336   4% /run
+/dev/xvda1       8065444 1277168   6771892  16% /
+tmpfs             507324      68    507256   1% /dev/shm
+tmpfs               5120       0      5120   0% /run/lock
+tmpfs             507324       0    507324   0% /sys/fs/cgroup
+tmpfs             101468       0    101468   0% /run/user/1000
+/root/playbook
+   November 2017
+Su Mo Tu We Th Fr Sa
+          1  2  3  4
+ 5  6  7  8  9 10 11
+12 13 14 15 16 17 18
+19 20 21 22 23 24 25
+26 27 28 29 30
+
+ubuntu   pts/1        2017-11-23 06:22 (103.42.84.2)
+
+52.87.245.220 | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks   Used Available Use% Mounted on
+udev              499364      0    499364   0% /dev
+tmpfs             101468   3200     98268   4% /run
+/dev/xvda1       8065444 883992   7165068  11% /
+tmpfs             507324      0    507324   0% /dev/shm
+tmpfs               5120      0      5120   0% /run/lock
+tmpfs             507324      0    507324   0% /sys/fs/cgroup
+tmpfs             101468      0    101468   0% /run/user/1000
+tmpfs             101468      0    101468   0% /run/user/0
+/root
+   November 2017
+Su Mo Tu We Th Fr Sa
+          1  2  3  4
+ 5  6  7  8  9 10 11
+12 13 14 15 16 17 18
+19 20 21 22 23 24 25
+26 27 28 29 30
+
+ubuntu   pts/0        2017-11-23 05:24 (103.42.84.2)
+ubuntu   pts/1        2017-11-23 06:26 (103.42.84.2)
+root     pts/2        2017-11-23 06:53 (54.166.37.131)
+
+
+
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "lsblk;df;pwd;cal;who"
+localhost | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks    Used Available Use% Mounted on
+udev              499364       0    499364   0% /dev
+tmpfs             101468    3132     98336   4% /run
+/dev/xvda1       8065444 1277168   6771892  16% /
+tmpfs             507324      68    507256   1% /dev/shm
+tmpfs               5120       0      5120   0% /run/lock
+tmpfs             507324       0    507324   0% /sys/fs/cgroup
+tmpfs             101468       0    101468   0% /run/user/1000
+/root/playbook
+   November 2017
+Su Mo Tu We Th Fr Sa
+          1  2  3  4
+ 5  6  7  8  9 10 11
+12 13 14 15 16 17 18
+19 20 21 22 23 24 25
+26 27 28 29 30
+
+ubuntu   pts/1        2017-11-23 06:22 (103.42.84.2)
+
+52.87.245.220 | SUCCESS | rc=0 >>
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
++-xvda1 202:1    0   8G  0 part /
+Filesystem     1K-blocks   Used Available Use% Mounted on
+udev              499364      0    499364   0% /dev
+tmpfs             101468   3200     98268   4% /run
+/dev/xvda1       8065444 883992   7165068  11% /
+tmpfs             507324      0    507324   0% /dev/shm
+tmpfs               5120      0      5120   0% /run/lock
+tmpfs             507324      0    507324   0% /sys/fs/cgroup
+tmpfs             101468      0    101468   0% /run/user/1000
+tmpfs             101468      0    101468   0% /run/user/0
+/root
+   November 2017
+Su Mo Tu We Th Fr Sa
+          1  2  3  4
+ 5  6  7  8  9 10 11
+12 13 14 15 16 17 18
+19 20 21 22 23 24 25
+26 27 28 29 30
+
+ubuntu   pts/0        2017-11-23 05:24 (103.42.84.2)
+ubuntu   pts/1        2017-11-23 06:26 (103.42.84.2)
+root     pts/2        2017-11-23 06:53 (54.166.37.131)
+
+root@ip-172-31-73-183:~/playbook# who
+ubuntu   pts/1        2017-11-23 06:22 (103.42.84.2)
+root@ip-172-31-73-183:~/playbook# w
+ 06:54:11 up  1:57,  1 user,  load average: 0.00, 0.01, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+ubuntu   pts/1    103.42.84.2      06:22    3.00s  0.19s  0.00s sshd: ubuntu [priv]
+root@ip-172-31-73-183:~/playbook# whoami
+root
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "mkdir nag"
+localhost | SUCCESS | rc=0 >>
+
+
+52.87.245.220 | SUCCESS | rc=0 >>
+
+
+root@ip-172-31-73-183:~/playbook# ls
+file.yml  nag  p2.yml  p3.yml  p4.yml  README.md
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "find -name nag"
+localhost | SUCCESS | rc=0 >>
+./nag
+
+52.87.245.220 | SUCCESS | rc=0 >>
+./nag
+
+root@ip-172-31-73-183:~/playbook# ansible -m yum web -a "pkg=httpd state=installed"
+174.129.172.52 | SUCCESS => {
+    "changed": true,
+    "msg": "",
+    "rc": 0,
+    "results": [
+        "Loaded plugins: priorities, update-motd, upgrade-helper\nResolving Dependencies\n--> Running transaction check\n---> Package httpd.x86_64 0:2.2.34-1.16.amzn1 will be installed\n--> Processing Dependency: httpd-tools = 2.2.34-1.16.amzn1 for package: httpd-2.2.34-1.16.amzn1.x86_64\n--> Processing Dependency: apr-util-ldap for package: httpd-2.2.34-1.16.amzn1.x86_64\n--> Processing Dependency: libaprutil-1.so.0()(64bit) for package: httpd-2.2.34-1.16.amzn1.x86_64\n--> Processing Dependency: libapr-1.so.0()(64bit) for package: httpd-2.2.34-1.16.amzn1.x86_64\n--> Running transaction check\n---> Package apr.x86_64 0:1.5.1-1.12.amzn1 will be installed\n---> Package apr-util.x86_64 0:1.4.1-4.17.amzn1 will be installed\n---> Package apr-util-ldap.x86_64 0:1.4.1-4.17.amzn1 will be installed\n---> Package httpd-tools.x86_64 0:2.2.34-1.16.amzn1 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package            Arch        Version                 Repository         Size\n==============\nInstalling:\n httpd              x86_64      2.2.34-1.16.amzn1       amzn-updates      1.2 M\nInstalling for dependencies:\n apr                x86_64      1.5.1-1.12.amzn1        amzn-main         116 k\n apr-util           x86_64      1.4.1-4.17.amzn1        amzn-main          87 k\n apr-util-ldap      x86_64      1.4.1-4.17.amzn1        amzn-main          17 k\n httpd-tools        x86_64      2.2.34-1.16.amzn1       amzn-updates       80 k\n\nTransaction Summary\n================================================================================\nInstall  1 Package (+4 Dependent packages)\n\nTotal download size: 1.5 M\nInstalled size: 3.6 M\nDownloading packages:\n--------------------------------------------------------------------------------\nTotal                                              617 kB/s | 1.5 MB  00:02     \nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Installing : apr-1.5.1-1.12.amzn1.x86_64                                  1/5 \n  Installing : apr-util-1.4.1-4.17.amzn1.x86_64                             2/5 \n  Installing : httpd-tools-2.2.34-1.16.amzn1.x86_64                         3/5 \n  Installing : apr-util-ldap-1.4.1-4.17.amzn1.x86_64                        4/5 \n  Installing : httpd-2.2.34-1.16.amzn1.x86_64                               5/5 \n  Verifying  : httpd-tools-2.2.34-1.16.amzn1.x86_64                         1/5 \n  Verifying  : apr-1.5.1-1.12.amzn1.x86_64                                  2/5 \n  Verifying  : httpd-2.2.34-1.16.amzn1.x86_64                               3/5 \n  Verifying  : apr-util-1.4.1-4.17.amzn1.x86_64                             4/5 \n  Verifying  : apr-util-ldap-1.4.1-4.17.amzn1.x86_64                        5/5 \n\nInstalled:\n  httpd.x86_64 0:2.2.34-1.16.amzn1                                              \n\nDependency Installed:\n  apr.x86_64 0:1.5.1-1.12.amzn1                                                 \n  apr-util.x86_64 0:1.4.1-4.17.amzn1                                            \n  apr-util-ldap.x86_64 0:1.4.1-4.17.amzn1                                       \n  httpd-tools.x86_64 0:2.2.34-1.16.amzn1                                        \n\nComplete!\n"
+    ]
+}
+
+
+
+root@ip-172-31-73-183:~/playbook# ansible -m shell dev -a "ps -ef | grep httpd"
+localhost | SUCCESS | rc=0 >>
+root     11172  9655 24 07:01 pts/1    00:00:00 /usr/bin/python /usr/bin/ansible -m shell dev -a ps -ef | grep httpd
+root     11175 11172  0 07:01 pts/1    00:00:00 /usr/bin/python /usr/bin/ansible -m shell dev -a ps -ef | grep httpd
+root     11176 11172  0 07:01 pts/1    00:00:00 /usr/bin/python /usr/bin/ansible -m shell dev -a ps -ef | grep httpd
+root     11177 11172  0 07:01 pts/1    00:00:00 /usr/bin/python /usr/bin/ansible -m shell dev -a ps -ef | grep httpd
+root     11187 11186  0 07:01 pts/1    00:00:00 /bin/sh -c ps -ef | grep httpd
+root     11189 11187  0 07:01 pts/1    00:00:00 grep httpd
+
+52.87.245.220 | SUCCESS | rc=0 >>
+root     13633 13632  0 07:01 pts/2    00:00:00 /bin/sh -c ps -ef | grep httpd
+root     13635 13633  0 07:01 pts/2    00:00:00 grep httpd
+
+
+
+
+
+
+root@ip-172-31-73-183:~/playbook# ansible -m copy web -a "src=/root/playbook/index.html  dest=/var/www/html/"
+174.129.172.52 | SUCCESS => {
+    "changed": true,
+    "checksum": "a10c8d1d5750d14032f7bca846a9b1157fc579e4",
+    "dest": "/var/www/html/index.html",
+    "gid": 0,
+    "group": "root",
+    "md5sum": "cf473f511614b9a2f40e0ecc014688fd",
+    "mode": "0644",
+    "owner": "root",
+    "size": 70,
+    "src": "/root/.ansible/tmp/ansible-tmp-1511420890.89-140848089453693/source",
+    "state": "file",
+    "uid": 0
+}
+
+
+
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# cp p3.yml p5.yml
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+ok: [localhost]
+ok: [52.87.245.220]
+
+TASK [install a package] *******************************************************
+fatal: [52.87.245.220]: FAILED! => {"changed": false, "failed": true, "msg": "systemd could not find the requested service \"'httpd'\": "}
+fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "systemd could not find the requested service \"'httpd'\": "}
+changed: [174.129.172.52]
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=1    unreachable=0    failed=0
+52.87.245.220              : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [174.129.172.52]
+
+TASK [install a package] *******************************************************
+changed: [174.129.172.52]
+
+PLAY RECAP *********************************************************************
+174.129.172.52             : ok=2    changed=1    unreachable=0    failed=0
+
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml
+ERROR! conflicting action statements
+
+The error appears to have been in '/root/playbook/p5.yml': line 6, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+   tasks:
+    - name: install a package on centos
+      ^ here
+
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml
+ERROR! conflicting action statements
+
+The error appears to have been in '/root/playbook/p5.yml': line 6, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+   tasks:
+     - name: install a package on centos
+       ^ here
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml  -vvv
+Using /etc/ansible/ansible.cfg as config file
+ERROR! conflicting action statements
+
+The error appears to have been in '/root/playbook/p5.yml': line 6, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+   tasks:
+     - name: install a package on centos
+       ^ here
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml  -vvvv
+Using /etc/ansible/ansible.cfg as config file
+ERROR! conflicting action statements
+
+The error appears to have been in '/root/playbook/p5.yml': line 6, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+   tasks:
+     - name: install a package on centos
+       ^ here
+
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml  -vvvv
+Using /etc/ansible/ansible.cfg as config file
+ERROR! conflicting action statements
+
+The error appears to have been in '/root/playbook/p5.yml': line 6, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+   tasks:
+     - name: To  install a package on centos
+       ^ here
+
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml
+ERROR! conflicting action statements
+
+The error appears to have been in '/root/playbook/p5.yml': line 6, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+   tasks:
+     - name: To  install a package
+       ^ here
+
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+ok: [52.87.245.220]
+
+TASK [To  install a package] ***************************************************
+changed: [localhost]
+changed: [52.87.245.220]
+
+TASK [TO start the package] ****************************************************
+ok: [localhost]
+ok: [52.87.245.220]
+
+PLAY RECAP *********************************************************************
+52.87.245.220              : ok=3    changed=1    unreachable=0    failed=0
+localhost                  : ok=3    changed=1    unreachable=0    failed=0
+
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml  -vvv
+Using /etc/ansible/ansible.cfg as config file
+1 plays in p5.yml
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ESTABLISH LOCAL CONNECTION FOR USER: root
+localhost EXEC ( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422085.74-194327528348176 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422085.74-194327528348176 )" )
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422085.74-93623430749732 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422085.74-93623430749732 )" )'
+localhost PUT /tmp/tmpCT5gVa TO /root/.ansible/tmp/ansible-tmp-1511422085.74-194327528348176/setup
+localhost EXEC LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511422085.74-194327528348176/setup; rm -rf "/root/.ansible/tmp/ansible-tmp-1511422085.74-194327528348176/" > /dev/null 2>&1
+<52.87.245.220> PUT /tmp/tmp8cTRDs TO /root/.ansible/tmp/ansible-tmp-1511422085.74-93623430749732/setup
+<52.87.245.220> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[52.87.245.220]'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511422085.74-93623430749732/setup; rm -rf "/root/.ansible/tmp/ansible-tmp-1511422085.74-93623430749732/" > /dev/null 2>&1'
+ok: [52.87.245.220]
+ok: [localhost]
+
+TASK [To  install a package] ***************************************************
+task path: /root/playbook/p5.yml:6
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+ESTABLISH LOCAL CONNECTION FOR USER: root
+localhost EXEC ( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422086.23-116820264399797 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422086.23-116820264399797 )" )
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422086.23-266251785373872 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422086.23-266251785373872 )" )'
+localhost PUT /tmp/tmpTZgvEM TO /root/.ansible/tmp/ansible-tmp-1511422086.23-116820264399797/apt
+localhost EXEC LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511422086.23-116820264399797/apt; rm -rf "/root/.ansible/tmp/ansible-tmp-1511422086.23-116820264399797/" > /dev/null 2>&1
+<52.87.245.220> PUT /tmp/tmpQQw__4 TO /root/.ansible/tmp/ansible-tmp-1511422086.23-266251785373872/apt
+<52.87.245.220> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[52.87.245.220]'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511422086.23-266251785373872/apt; rm -rf "/root/.ansible/tmp/ansible-tmp-1511422086.23-266251785373872/" > /dev/null 2>&1'
+ok: [52.87.245.220] => {"cache_update_time": 0, "cache_updated": false, "changed": false, "invocation": {"module_args": {"cache_valid_time": null, "deb": null, "default_release": null, "dpkg_options": "force-confdef,force-confold", "force": false, "install_recommends": null, "package": ["apache2"], "pkg": "apache2", "purge": false, "state": "present", "update_cache": false, "upgrade": null}, "module_name": "apt"}}
+ok: [localhost] => {"cache_update_time": 0, "cache_updated": false, "changed": false, "invocation": {"module_args": {"cache_valid_time": null, "deb": null, "default_release": null, "dpkg_options": "force-confdef,force-confold", "force": false, "install_recommends": null, "package": ["apache2"], "pkg": "apache2", "purge": false, "state": "present", "update_cache": false, "upgrade": null}, "module_name": "apt"}}
+
+TASK [TO start the package] ****************************************************
+task path: /root/playbook/p5.yml:9
+ESTABLISH LOCAL CONNECTION FOR USER: root
+localhost EXEC ( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422086.61-109449328085365 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422086.61-109449328085365 )" )
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 '( umask 22 && mkdir -p "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422086.61-2352095459795 )" && echo "$( echo $HOME/.ansible/tmp/ansible-tmp-1511422086.61-2352095459795 )" )'
+localhost PUT /tmp/tmpmz_Lam TO /root/.ansible/tmp/ansible-tmp-1511422086.61-109449328085365/service
+localhost EXEC LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511422086.61-109449328085365/service; rm -rf "/root/.ansible/tmp/ansible-tmp-1511422086.61-109449328085365/" > /dev/null 2>&1
+<52.87.245.220> PUT /tmp/tmpr4uwJy TO /root/.ansible/tmp/ansible-tmp-1511422086.61-2352095459795/service
+<52.87.245.220> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r '[52.87.245.220]'
+<52.87.245.220> ESTABLISH SSH CONNECTION FOR USER: None
+<52.87.245.220> SSH: EXEC ssh -C -q -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o ControlPath=/root/.ansible/cp/ansible-ssh-%h-%p-%r -tt 52.87.245.220 'LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 LC_MESSAGES=en_US.UTF-8 /usr/bin/python /root/.ansible/tmp/ansible-tmp-1511422086.61-2352095459795/service; rm -rf "/root/.ansible/tmp/ansible-tmp-1511422086.61-2352095459795/" > /dev/null 2>&1'
+ok: [localhost] => {"changed": false, "invocation": {"module_args": {"arguments": "", "enabled": null, "name": "apache2", "pattern": null, "runlevel": "default", "sleep": null, "state": "running"}, "module_name": "service"}, "name": "apache2", "state": "started"}
+ok: [52.87.245.220] => {"changed": false, "invocation": {"module_args": {"arguments": "", "enabled": null, "name": "apache2", "pattern": null, "runlevel": "default", "sleep": null, "state": "running"}, "module_name": "service"}, "name": "apache2", "state": "started"}
+
+PLAY RECAP *********************************************************************
+52.87.245.220              : ok=3    changed=0    unreachable=0    failed=0
+localhost                  : ok=3    changed=0    unreachable=0    failed=0
+
+
+
+
+
+======================================================================================================================================================================================
+
+
+error 2:
+=======
+Using /etc/ansible/ansible.cfg as config file
+ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/root/playbook/p5.yml': line 18, column 19, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+        - name: to restart apache service
+           service: name=apache2 state=restarted
+                  ^ here
+
+
+
+error 3:
+
+
+ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/root/playbook/p5.yml': line 18, column 19, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+        - name: to restart apache service
+           service: name=apache2 state=restarted
+                  ^ here
+
+root@ip-172-31-73-183:~/playbook# vi p5.yml
+root@ip-172-31-73-183:~/playbook# ansible-playbook p5.yml  -vvv
+Using /etc/ansible/ansible.cfg as config file
+ERROR! no action detected in task
+
+The error appears to have been in '/root/playbook/p5.yml': line 13, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+       copy: src=/root/playbook/index.html dest=/var/www/html
+     - name: To now notify
+       ^ here
+
+
+
+[root@ip-172-31-73-240 ~]# ansible-playbook play.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it
+can be a list of hosts and/or paths to inventory sources . This feature will be
+ removed in version 2.8. Deprecation warnings can be disabled by setting
+deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **********************************************************
+fatal: [54.89.211.80]: FAILED! => {"changed": false, "failed": true, "msg": "Gro                                                                                        up nagendra does not exist"}
+fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "Group                                                                                         nagendra does not exist"}
+fatal: [54.152.196.130]: FAILED! => {"changed": false, "failed": true, "msg": "G                                                                                        roup nagendra does not exist"}
+        to retry, use: --limit @/root/play.retry
+
+PLAY RECAP *********************************************************************
+54.152.196.130             : ok=1    changed=0    unreachable=0    failed=1
+54.89.211.80               : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+[root@ip-172-31-73-240 ~]# vi play.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **************************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+

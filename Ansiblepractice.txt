@@ -1,0 +1,103 @@
+ansible:
+
+hostmachine:
+============
+
+
+step 1:first of all we generate sshkey
+
+
+>> ssh-keygen  -->hit the enter
+
+step 2: now copy the ssh_public key
+
+>> cd /root/.ssh
+
+cat id_rsa.pub  --> now we copy this public key  
+
+
+
+step 2: now we install ansible package on hostmachine
+
+
+yum --enablerepo=epel -y install ansible openssh-clients ---> To install the package on centos
+
+
+step 3: we configure the inventory file
+
+vi /etc/ansible/hosts
+
+[ group ] 
+
+ip of remote machine's
+
+:wq!
+
+
+
+
+
+=================================================================================================================================================================================
+
+
+Remotemachine:
+=============
+
+now we create a one directory
+
+
+mkdir .ssh  
+
+cd .ssh
+
+touch authorized_keys  ---> this file create at .ssh directoy
+
+chmod -R 600  authorized_keys ---> give the read and write permission
+
+
+
+now we paste the ssh_public key at /.ssh/authorized_keys
+
+
+vi authorized_keys
+
+paste the id_rsa.pub key here
+
+
+:wq!
+
+
+
+
+step 2: we configure sshd config file enable the password authentication and permitrootlogin 
+
+
+vi /etc/ssh/sshd_config
+
+
+
+ 
+vi /etc/ssh/sshd_config
+
+
+#PermitRootLogin yes --->default we have to un comment this line
+
+
+PermitRootLogin yes
+
+
+PasswordAuthentication yes -----> default we have to un comment this line
+
+PasswordAuthentication yes
+
+3) now we restart sshd service
+
+service sshd restart
+
+
+4) To install python package on all remote machine's
+
+yum install -y python 
+
+
+

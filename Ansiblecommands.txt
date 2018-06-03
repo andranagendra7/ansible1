@@ -1,0 +1,107 @@
+
+Ansible commands:
+=================
+
+ansible --version    ---> TO check ansible version
+
+  
+ansible -m ping all  ---> To test the connection host machine to remote machine's
+ 
+
+ansible -m ping [ groupname ]      -----> To test the connection host machine to perticualr remote machine's
+
+ansible [group name] -m ping       ------> To test the connection host machine to remote machine's
+
+ansible-playbook playbookname.yml  ------> To execute playbook 
+
+
+ansible-playbook playbookname.yml --syntax-check ----> To check playbook syntax
+
+
+ansible-playbook p3.yml -vvv ---> To give full details of excution process
+ 
+
+ansible-playbook p3.yml -vvvv
+
+
+ansible adoc commands:
+======================
+
+
+1 >>> ansible -m ping localhost ----> To check the connecton
+
+
+if we want to check list of module's by using bellow command
+
+ >>>> ansible-doc -l | more l
+
+
+ansible-doc -l | wc -l ----> To display list of module's 
+
+460
+
+ansible-doc -l | wc
+
+    460    3394   75583
+
+ansible-doc -s << modulename >> ---> To perticular module information
+
+example:
+
+ansible-doc -s yum
+
+ansible -m ping all -o  ---> To display output single line
+
+
+ ansible -m shell dev -a "uname -a"                  ----> shell module
+
+ ansible -m shell dev -a "mkdir nag"                 ----> To create directory
+
+ ansible -m shell dev -a "find -name nag"            ----> To find a directory
+
+ ansible -m yum web -a "pkg=httpd state=installed"   ----> TO install the packge on remote machine's
+
+
+ansible -m shell dev -a "ps -ef | grep httpd"        ----> To search perticular service on remote machine's
+
+
+
+ansible -m service web -a "name=httpd state=stopped" ----> To stop a httpd service
+
+
+ansible -m service web -a "name=httpd state=running" ----> To start the httpd service
+
+
+ running,started,stopped,restarted,reloaded, got: start
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

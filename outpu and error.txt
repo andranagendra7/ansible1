@@ -1,0 +1,2043 @@
+ansible valut:
+
+
+export EDITOR=vim
+
+step 1: now we encrypt the playbook 
+
+ ansible-vault  encrypt << playbookname >>
+
+example:
+
+ansible-vault  encrypt edit play2.yml
+
+
+step 2: now we decrypt the playbook
+
+
+ansible-vault  decrypt << playbookname >>
+
+example:
+========
+
+ansible-vault  decrypt play2.yml
+
+
+
+step 3:
+
+if  we want to edit  encrypt  playbook  by using bellow command
+ 
+
+ansible-vault   edit << playbookname >>  ---> it will ask password 
+
+password:
+
+now open playbook the we can edit playbook and exit
+
+step 4:
+
+ if we want to view the encrypt playbook by using bellow command
+
+
+ansible-vault   view << playbookname >>  ---> it will ask password 
+
+password:
+
+step 5: if we want to see the encrypt playbook by using bellow command
+
+
+
+ ansible-vault view play2.yml
+
+
+
+
+===================================================================================================================================================================
+
+Loops:
+=====
+
+
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key"
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/
+[ec2-user@ip-172-31-73-240 ~]$ sudo -i
+[root@ip-172-31-73-240 ~]# clear
+[root@ip-172-31-73-240 ~]# yum --enablerepo=epel -y install ansible openssh-clie                                                                                        nts
+Loaded plugins: priorities, update-motd, upgrade-helper
+epel/x86_64/metalink                                     |  17 kB     00:00
+epel                                                     | 4.7 kB     00:00
+(1/3): epel/x86_64/group_gz                                | 255 kB   00:00
+(2/3): epel/x86_64/updateinfo                              | 755 kB   00:00
+(3/3): epel/x86_64/primary_db                              | 6.0 MB   00:06
+1039 packages excluded due to repository priority protections
+Package openssh-clients-7.4p1-11.68.amzn1.x86_64 already installed and latest ve                                                                                        rsion
+Resolving Dependencies
+--> Running transaction check
+---> Package ansible.noarch 0:2.4.1.0-2.el6 will be installed
+--> Processing Dependency: python(abi) = 2.6 for package: ansible-2.4.1.0-2.el6.                                                                                        noarch
+--> Processing Dependency: /usr/bin/python2.6 for package: ansible-2.4.1.0-2.el6                                                                                        .noarch
+--> Processing Dependency: PyYAML for package: ansible-2.4.1.0-2.el6.noarch
+--> Processing Dependency: python-crypto for package: ansible-2.4.1.0-2.el6.noar                                                                                        ch
+--> Processing Dependency: python-crypto2.6 for package: ansible-2.4.1.0-2.el6.n                                                                                        oarch
+--> Processing Dependency: python-httplib2 for package: ansible-2.4.1.0-2.el6.no                                                                                        arch
+--> Processing Dependency: python-jinja2-26 for package: ansible-2.4.1.0-2.el6.n                                                                                        oarch
+--> Processing Dependency: python-keyczar for package: ansible-2.4.1.0-2.el6.noa                                                                                        rch
+--> Processing Dependency: python-paramiko for package: ansible-2.4.1.0-2.el6.no                                                                                        arch
+--> Processing Dependency: python-setuptools for package: ansible-2.4.1.0-2.el6.                                                                                        noarch
+--> Processing Dependency: python-simplejson for package: ansible-2.4.1.0-2.el6.                                                                                        noarch
+--> Processing Dependency: python-six for package: ansible-2.4.1.0-2.el6.noarch
+--> Processing Dependency: sshpass for package: ansible-2.4.1.0-2.el6.noarch
+--> Running transaction check
+---> Package python-crypto2.6.x86_64 0:2.6.1-2.el6 will be installed
+--> Processing Dependency: libpython2.6.so.1.0()(64bit) for package: python-cryp                                                                                        to2.6-2.6.1-2.el6.x86_64
+---> Package python-jinja2-26.noarch 0:2.6-3.el6 will be installed
+--> Processing Dependency: python-babel >= 0.8 for package: python-jinja2-26-2.6                                                                                        -3.el6.noarch
+--> Processing Dependency: python-markupsafe for package: python-jinja2-26-2.6-3                                                                                        .el6.noarch
+---> Package python-keyczar.noarch 0:0.71c-1.el6 will be installed
+--> Processing Dependency: python-pyasn1 for package: python-keyczar-0.71c-1.el6                                                                                        .noarch
+---> Package python26.x86_64 0:2.6.9-2.89.amzn1 will be installed
+---> Package python26-PyYAML.x86_64 0:3.10-3.10.amzn1 will be installed
+---> Package python26-crypto.x86_64 0:2.6.1-1.14.amzn1 will be installed
+---> Package python26-httplib2.noarch 0:0.7.7-1.5.amzn1 will be installed
+---> Package python26-paramiko.noarch 0:1.15.1-1.5.amzn1 will be installed
+--> Processing Dependency: python26-ecdsa for package: python26-paramiko-1.15.1-                                                                                        1.5.amzn1.noarch
+---> Package python26-setuptools.noarch 0:36.2.7-1.33.amzn1 will be installed
+--> Processing Dependency: python26-backports-ssl_match_hostname for package: py                                                                                        thon26-setuptools-36.2.7-1.33.amzn1.noarch
+---> Package python26-simplejson.x86_64 0:3.6.5-1.12.amzn1 will be installed
+---> Package python26-six.noarch 0:1.8.0-1.23.amzn1 will be installed
+---> Package sshpass.x86_64 0:1.06-1.el6 will be installed
+--> Running transaction check
+---> Package python26-babel.noarch 0:0.9.4-5.1.8.amzn1 will be installed
+---> Package python26-backports-ssl_match_hostname.noarch 0:3.4.0.2-1.12.amzn1 w                                                                                        ill be installed
+--> Processing Dependency: python26-backports for package: python26-backports-ss                                                                                        l_match_hostname-3.4.0.2-1.12.amzn1.noarch
+---> Package python26-ecdsa.noarch 0:0.11-3.3.amzn1 will be installed
+---> Package python26-libs.x86_64 0:2.6.9-2.89.amzn1 will be installed
+---> Package python26-markupsafe.x86_64 0:0.11-4.6.amzn1 will be installed
+---> Package python26-pyasn1.noarch 0:0.1.7-2.9.amzn1 will be installed
+--> Running transaction check
+---> Package python26-backports.x86_64 0:1.0-3.14.amzn1 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package                           Arch   Version            Repository    Size
+================================================================================
+Installing:
+ ansible                           noarch 2.4.1.0-2.el6      epel         7.9 M
+Installing for dependencies:
+ python-crypto2.6                  x86_64 2.6.1-2.el6        epel         513 k
+ python-jinja2-26                  noarch 2.6-3.el6          epel         527 k
+ python-keyczar                    noarch 0.71c-1.el6        epel         219 k
+ python26                          x86_64 2.6.9-2.89.amzn1   amzn-updates 5.8 M
+ python26-PyYAML                   x86_64 3.10-3.10.amzn1    amzn-main    186 k
+ python26-babel                    noarch 0.9.4-5.1.8.amzn1  amzn-main    1.8 M
+ python26-backports                x86_64 1.0-3.14.amzn1     amzn-main    5.2 k
+ python26-backports-ssl_match_hostname
+                                   noarch 3.4.0.2-1.12.amzn1 amzn-main     12 k
+ python26-crypto                   x86_64 2.6.1-1.14.amzn1   amzn-main    699 k
+ python26-ecdsa                    noarch 0.11-3.3.amzn1     amzn-main     77 k
+ python26-httplib2                 noarch 0.7.7-1.5.amzn1    amzn-main     81 k
+ python26-libs                     x86_64 2.6.9-2.89.amzn1   amzn-updates 697 k
+ python26-markupsafe               x86_64 0.11-4.6.amzn1     amzn-main     27 k
+ python26-paramiko                 noarch 1.15.1-1.5.amzn1   amzn-main    1.3 M
+ python26-pyasn1                   noarch 0.1.7-2.9.amzn1    amzn-main    112 k
+ python26-setuptools               noarch 36.2.7-1.33.amzn1  amzn-main    675 k
+ python26-simplejson               x86_64 3.6.5-1.12.amzn1   amzn-main    210 k
+ python26-six                      noarch 1.8.0-1.23.amzn1   amzn-main     31 k
+ sshpass                           x86_64 1.06-1.el6         epel          20 k
+
+Transaction Summary
+================================================================================
+Install  1 Package (+19 Dependent packages)
+
+Total download size: 21 M
+Installed size: 82 M
+Downloading packages:
+warning: /var/cache/yum/x86_64/latest/epel/packages/python-jinja2-26-2.6-3.el6.n                                                                                        oarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0608b895: NOKEY
+Public key for python-jinja2-26-2.6-3.el6.noarch.rpm is not installed
+(1/20): python-jinja2-26-2.6-3.el6.noarch.rpm              | 527 kB   00:00
+(2/20): python-crypto2.6-2.6.1-2.el6.x86_64.rpm            | 513 kB   00:00
+(3/20): python26-PyYAML-3.10-3.10.amzn1.x86_64.rpm         | 186 kB   00:00
+(4/20): python26-backports-1.0-3.14.amzn1.x86_64.rpm       | 5.2 kB   00:00
+(5/20): python26-babel-0.9.4-5.1.8.amzn1.noarch.rpm        | 1.8 MB   00:01
+(6/20): python26-backports-ssl_match_hostname-3.4.0.2-1.12 |  12 kB   00:00
+(7/20): python26-ecdsa-0.11-3.3.amzn1.noarch.rpm           |  77 kB   00:00
+(8/20): python26-crypto-2.6.1-1.14.amzn1.x86_64.rpm        | 699 kB   00:00
+(9/20): python26-httplib2-0.7.7-1.5.amzn1.noarch.rpm       |  81 kB   00:00
+(10/20): python26-markupsafe-0.11-4.6.amzn1.x86_64.rpm     |  27 kB   00:00
+(11/20): ansible-2.4.1.0-2.el6.noarch.rpm                  | 7.9 MB   00:02
+(12/20): python26-2.6.9-2.89.amzn1.x86_64.rpm              | 5.8 MB   00:02
+(13/20): python26-paramiko-1.15.1-1.5.amzn1.noarch.rpm     | 1.3 MB   00:00
+(14/20): python26-libs-2.6.9-2.89.amzn1.x86_64.rpm         | 697 kB   00:00
+(15/20): python26-pyasn1-0.1.7-2.9.amzn1.noarch.rpm        | 112 kB   00:00
+(16/20): python26-setuptools-36.2.7-1.33.amzn1.noarch.rpm  | 675 kB   00:00
+(17/20): python26-six-1.8.0-1.23.amzn1.noarch.rpm          |  31 kB   00:00
+(18/20): sshpass-1.06-1.el6.x86_64.rpm                     |  20 kB   00:00
+(19/20): python26-simplejson-3.6.5-1.12.amzn1.x86_64.rpm   | 210 kB   00:00
+python-keyczar-0.71c-1.el6.noa FAILED
+http://mirrors.nebo.edu/public/epel/6/x86_64/Packages/p/python-keyczar-0.71c-1.e                                                                                        l6.noarch.rpm: [Errno 12] Timeout on http://mirrors.nebo.edu/public/epel/6/x86_6                                                                                        4/Packages/p/python-keyczar-0.71c-1.el6.noarch.rpm: (28, 'Connection timed out a                                                                                        fter 5000 milliseconds')
+Trying other mirror.
+(20/20): python-keyczar-0.71c-1.el6.noarch.rpm             | 219 kB   00:00
+--------------------------------------------------------------------------------
+Total                                              3.7 MB/s |  21 MB  00:05
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+Importing GPG key 0x0608B895:
+ Userid     : "EPEL (6) <epel@fedoraproject.org>"
+ Fingerprint: 8c3b e96a f230 9184 da5c 0dae 3b49 df2a 0608 b895
+ Package    : epel-release-6-8.9.amzn1.noarch (installed)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : python26-libs-2.6.9-2.89.amzn1.x86_64                       1/20
+  Installing : python26-2.6.9-2.89.amzn1.x86_64                            2/20
+  Installing : python26-crypto-2.6.1-1.14.amzn1.x86_64                     3/20
+  Installing : python26-six-1.8.0-1.23.amzn1.noarch                        4/20
+  Installing : python26-ecdsa-0.11-3.3.amzn1.noarch                        5/20
+  Installing : python26-paramiko-1.15.1-1.5.amzn1.noarch                   6/20
+  Installing : python26-httplib2-0.7.7-1.5.amzn1.noarch                    7/20
+  Installing : python26-PyYAML-3.10-3.10.amzn1.x86_64                      8/20
+  Installing : python26-markupsafe-0.11-4.6.amzn1.x86_64                   9/20
+  Installing : python-crypto2.6-2.6.1-2.el6.x86_64                        10/20
+  Installing : python26-backports-1.0-3.14.amzn1.x86_64                   11/20
+  Installing : python26-backports-ssl_match_hostname-3.4.0.2-1.12.amzn1   12/20
+  Installing : python26-setuptools-36.2.7-1.33.amzn1.noarch               13/20
+  Installing : python26-babel-0.9.4-5.1.8.amzn1.noarch                    14/20
+  Installing : python-jinja2-26-2.6-3.el6.noarch                          15/20
+  Installing : python26-pyasn1-0.1.7-2.9.amzn1.noarch                     16/20
+  Installing : python-keyczar-0.71c-1.el6.noarch                          17/20
+  Installing : python26-simplejson-3.6.5-1.12.amzn1.x86_64                18/20
+  Installing : sshpass-1.06-1.el6.x86_64                                  19/20
+  Installing : ansible-2.4.1.0-2.el6.noarch                               20/20
+  Verifying  : python26-setuptools-36.2.7-1.33.amzn1.noarch                1/20
+  Verifying  : python26-paramiko-1.15.1-1.5.amzn1.noarch                   2/20
+  Verifying  : sshpass-1.06-1.el6.x86_64                                   3/20
+  Verifying  : python-keyczar-0.71c-1.el6.noarch                           4/20
+  Verifying  : python26-ecdsa-0.11-3.3.amzn1.noarch                        5/20
+  Verifying  : python26-babel-0.9.4-5.1.8.amzn1.noarch                     6/20
+  Verifying  : python26-httplib2-0.7.7-1.5.amzn1.noarch                    7/20
+  Verifying  : python26-PyYAML-3.10-3.10.amzn1.x86_64                      8/20
+  Verifying  : python26-backports-ssl_match_hostname-3.4.0.2-1.12.amzn1    9/20
+  Verifying  : ansible-2.4.1.0-2.el6.noarch                               10/20
+  Verifying  : python26-six-1.8.0-1.23.amzn1.noarch                       11/20
+  Verifying  : python26-markupsafe-0.11-4.6.amzn1.x86_64                  12/20
+  Verifying  : python-crypto2.6-2.6.1-2.el6.x86_64                        13/20
+  Verifying  : python26-2.6.9-2.89.amzn1.x86_64                           14/20
+  Verifying  : python26-backports-1.0-3.14.amzn1.x86_64                   15/20
+  Verifying  : python26-pyasn1-0.1.7-2.9.amzn1.noarch                     16/20
+  Verifying  : python26-crypto-2.6.1-1.14.amzn1.x86_64                    17/20
+  Verifying  : python26-libs-2.6.9-2.89.amzn1.x86_64                      18/20
+  Verifying  : python-jinja2-26-2.6-3.el6.noarch                          19/20
+  Verifying  : python26-simplejson-3.6.5-1.12.amzn1.x86_64                20/20
+
+Installed:
+  ansible.noarch 0:2.4.1.0-2.el6
+
+Dependency Installed:
+  python-crypto2.6.x86_64 0:2.6.1-2.el6
+  python-jinja2-26.noarch 0:2.6-3.el6
+  python-keyczar.noarch 0:0.71c-1.el6
+  python26.x86_64 0:2.6.9-2.89.amzn1
+  python26-PyYAML.x86_64 0:3.10-3.10.amzn1
+  python26-babel.noarch 0:0.9.4-5.1.8.amzn1
+  python26-backports.x86_64 0:1.0-3.14.amzn1
+  python26-backports-ssl_match_hostname.noarch 0:3.4.0.2-1.12.amzn1
+  python26-crypto.x86_64 0:2.6.1-1.14.amzn1
+  python26-ecdsa.noarch 0:0.11-3.3.amzn1
+  python26-httplib2.noarch 0:0.7.7-1.5.amzn1
+  python26-libs.x86_64 0:2.6.9-2.89.amzn1
+  python26-markupsafe.x86_64 0:0.11-4.6.amzn1
+  python26-paramiko.noarch 0:1.15.1-1.5.amzn1
+  python26-pyasn1.noarch 0:0.1.7-2.9.amzn1
+  python26-setuptools.noarch 0:36.2.7-1.33.amzn1
+  python26-simplejson.x86_64 0:3.6.5-1.12.amzn1
+  python26-six.noarch 0:1.8.0-1.23.amzn1
+  sshpass.x86_64 0:1.06-1.el6
+
+Complete!
+[root@ip-172-31-73-240 ~]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:VoITJ0OPuUd2iWmOsn4AZzQtr5/8mIHwsBs/UuRgOA0 root@ip-172-31-73-240
+The key's randomart image is:
++---[RSA 2048]----+
+|     o= .        |
+|E   + .X o .     |
+| + . += O +      |
+|o = + .O +       |
+| ooB..o S        |
+|   ==+ o         |
+|  o.++..         |
+|  .=. =+         |
+|  ..ooo..        |
++----[SHA256]-----+
+[root@ip-172-31-73-240 ~]# vi /root/.ssh/id_rsa.pub
+[root@ip-172-31-73-240 ~]# cat /root/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7SoDKL5JaWCb2SF8EKs2eJpxmf+e7rskVm6iz/SFWuhOiJCeIwW8fc6qaeZ61PiJNXaVdS9Xj9xmc6y8nXrlMucAV53JgfgpcmutSdQ6CYVW+dpfTw9tcu++pAmM1LVf08obStDkNOv8AlDyoNMgA7BoM6TbKjqjYS2GpZ3z5a6JaSGyQQeAlBW43qDqFPvLN+iDWUkfKnBkOv8vmoNAj/zpAMYxGft+p2p6ItKGIPHR0dJJxqM0oTj9NGi/K8HLsKaxAWBbiH67m/GXaCPwdS242MnZtz589ec5Xh24znhE/T+fV8Fk6pgy9V1UnFrOmuk1NeorGfntS8Tz9zdDf root@ip-172-31-73-240
+[root@ip-172-31-73-240 ~]# vi /etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# export ANSIBLE_HOSTS=/etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# ansible -m ping all
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+The authenticity of host '54.152.196.130 (54.152.196.130)' can't be established.
+ECDSA key fingerprint is SHA256:IUd0lKj4RspmQRBmkF9eFdRytcStZ4VU7+P0zbdVB6E.
+ECDSA key fingerprint is MD5:cf:7c:28:22:5d:f0:41:e6:22:a0:95:fe:91:96:31:1a.
+Are you sure you want to continue connecting (yes/no)? The authenticity of host '54.89.211.80 (54.89.211.80)' can't be established.
+ECDSA key fingerprint is SHA256:NAAKX0QTgl3DLAoxdl/ounSYfs8BiAXOVKhn2o/EHlU.
+ECDSA key fingerprint is MD5:c3:18:75:39:c4:b6:37:b6:fb:c7:cf:59:32:2a:eb:c5.
+Are you sure you want to continue connecting (yes/no)? The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:yyy1jgdWJRteCBUUIGU3xQ+XejXZFSycysKIzWX21uk.
+ECDSA key fingerprint is MD5:d4:72:2d:89:28:cd:fc:be:92:71:14:4e:a7:d9:f3:77.
+Are you sure you want to continue connecting (yes/no)? yes
+54.152.196.130 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+
+54.89.211.80 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+
+localhost | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+[root@ip-172-31-73-240 ~]# ansible -m ping all  -vv
+ansible 2.4.1.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.6/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.6.9 (unknown, Nov  2 2017, 19:21:21) [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)]
+Using /etc/ansible/ansible.cfg as config file
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+META: ran handlers
+The authenticity of host '54.89.211.80 (54.89.211.80)' can't be established.
+ECDSA key fingerprint is SHA256:NAAKX0QTgl3DLAoxdl/ounSYfs8BiAXOVKhn2o/EHlU.
+ECDSA key fingerprint is MD5:c3:18:75:39:c4:b6:37:b6:fb:c7:cf:59:32:2a:eb:c5.
+Are you sure you want to continue connecting (yes/no)? The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:yyy1jgdWJRteCBUUIGU3xQ+XejXZFSycysKIzWX21uk.
+ECDSA key fingerprint is MD5:d4:72:2d:89:28:cd:fc:be:92:71:14:4e:a7:d9:f3:77.
+Are you sure you want to continue connecting (yes/no)? 54.152.196.130 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+
+54.89.211.80 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+
+localhost | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+META: ran handlers
+META: ran handlers
+[root@ip-172-31-73-240 ~]# export ANSIBLE_HOSTS=/etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# vi /etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# ansible -m ping all  -vv
+ansible 2.4.1.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.6/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.6.9 (unknown, Nov  2 2017, 19:21:21) [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)]
+Using /etc/ansible/ansible.cfg as config file
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+META: ran handlers
+The authenticity of host '54.89.211.80 (54.89.211.80)' can't be established.
+ECDSA key fingerprint is SHA256:NAAKX0QTgl3DLAoxdl/ounSYfs8BiAXOVKhn2o/EHlU.
+ECDSA key fingerprint is MD5:c3:18:75:39:c4:b6:37:b6:fb:c7:cf:59:32:2a:eb:c5.
+Are you sure you want to continue connecting (yes/no)? localhost | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+54.152.196.130 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+
+54.89.211.80 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+META: ran handlers
+META: ran handlers
+[root@ip-172-31-73-240 ~]# ssh root@54.152.182.246
+The authenticity of host '54.152.182.246 (54.152.182.246)' can't be established.
+ECDSA key fingerprint is SHA256:yyy1jgdWJRteCBUUIGU3xQ+XejXZFSycysKIzWX21uk.
+ECDSA key fingerprint is MD5:d4:72:2d:89:28:cd:fc:be:92:71:14:4e:a7:d9:f3:77.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '54.152.182.246' (ECDSA) to the list of known hosts.
+Permission denied (publickey).
+[root@ip-172-31-73-240 ~]# ssh root@54.152.182.246
+Permission denied (publickey).
+[root@ip-172-31-73-240 ~]# 54.89.211.80
+-bash: 54.89.211.80: command not found
+[root@ip-172-31-73-240 ~]# ssh root@54.89.211.80
+The authenticity of host '54.89.211.80 (54.89.211.80)' can't be established.
+ECDSA key fingerprint is SHA256:NAAKX0QTgl3DLAoxdl/ounSYfs8BiAXOVKhn2o/EHlU.
+ECDSA key fingerprint is MD5:c3:18:75:39:c4:b6:37:b6:fb:c7:cf:59:32:2a:eb:c5.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '54.89.211.80' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-1038-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+root@ip-172-31-68-34:~# exit
+logout
+Connection to 54.89.211.80 closed.
+[root@ip-172-31-73-240 ~]# vi /etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# ansible -m ping all  -vv
+ansible 2.4.1.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.6/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.6.9 (unknown, Nov  2 2017, 19:21:21) [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)]
+Using /etc/ansible/ansible.cfg as config file
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+META: ran handlers
+localhost | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+54.152.196.130 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+54.89.211.80 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+META: ran handlers
+META: ran handlers
+[root@ip-172-31-73-240 ~]# vi play.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it
+can be a list of hosts and/or paths to inventory sources . This feature will be
+ removed in version 2.8. Deprecation warnings can be disabled by setting
+deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **********************************************************
+fatal: [54.89.211.80]: FAILED! => {"changed": false, "failed": true, "msg": "Gro                                                                                        up nagendra does not exist"}
+fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "Group                                                                                         nagendra does not exist"}
+fatal: [54.152.196.130]: FAILED! => {"changed": false, "failed": true, "msg": "G                                                                                        roup nagendra does not exist"}
+        to retry, use: --limit @/root/play.retry
+
+PLAY RECAP *********************************************************************
+54.152.196.130             : ok=1    changed=0    unreachable=0    failed=1
+54.89.211.80               : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+[root@ip-172-31-73-240 ~]# vi play.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **************************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# cat play.yml
+
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       user: name=nagendra uid=566 group=root
+
+[root@ip-172-31-73-240 ~]# vu play2.yml
+-bash: vu: command not found
+[root@ip-172-31-73-240 ~]# vi play2.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play2.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **************************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# cp play2.yml play3.yml
+[root@ip-172-31-73-240 ~]# vi play3.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play3.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **************************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# cat /etc/group
+root:x:0:
+bin:x:1:bin,daemon
+daemon:x:2:bin,daemon
+sys:x:3:bin,adm
+adm:x:4:adm,daemon
+tty:x:5:
+disk:x:6:
+lp:x:7:daemon
+mem:x:8:
+kmem:x:9:
+wheel:x:10:ec2-user
+mail:x:12:mail
+uucp:x:14:
+man:x:15:
+games:x:20:
+gopher:x:30:
+video:x:39:
+dip:x:40:
+ftp:x:50:
+lock:x:54:
+audio:x:63:
+nobody:x:99:
+users:x:100:
+utmp:x:22:
+utempter:x:35:
+rpc:x:32:
+cdrom:x:11:
+tape:x:33:
+dialout:x:18:
+floppy:x:19:
+ssh_keys:x:499:
+cgred:x:498:
+ntp:x:38:
+saslauth:x:76:
+mailnull:x:47:
+smmsp:x:51:
+rpcuser:x:29:
+nfsnobody:x:65534:
+sshd:x:74:
+dbus:x:81:
+screen:x:84:
+ec2-user:x:500:
+nagendra:x:501:
+[root@ip-172-31-73-240 ~]# cat play3.yml
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       group: name=nagendra  state=present
+
+[root@ip-172-31-73-240 ~]# vi pass.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook pass.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [To create user and password] *************************************************************************************************************************************
+changed: [localhost]
+changed: [54.89.211.80]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# cat pass.yml
+
+
+---
+ - hosts: all
+   user: root
+   vars:
+     password: 1741049991
+   tasks:
+     - name: To create user and password
+       user: name=nagendra password={{password}}
+[root@ip-172-31-73-240 ~]# cat /etc/shadow
+root:*LOCK*:14600::::::
+bin:*:16323:0:99999:7:::
+daemon:*:16323:0:99999:7:::
+adm:*:16323:0:99999:7:::
+lp:*:16323:0:99999:7:::
+sync:*:16323:0:99999:7:::
+shutdown:*:16323:0:99999:7:::
+halt:*:16323:0:99999:7:::
+mail:*:16323:0:99999:7:::
+uucp:*:16323:0:99999:7:::
+operator:*:16323:0:99999:7:::
+games:*:16323:0:99999:7:::
+gopher:*:16323:0:99999:7:::
+ftp:*:16323:0:99999:7:::
+nobody:*:16323:0:99999:7:::
+rpc:!!:17490:0:99999:7:::
+ntp:!!:17490::::::
+saslauth:!!:17490::::::
+mailnull:!!:17490::::::
+smmsp:!!:17490::::::
+rpcuser:!!:17490::::::
+nfsnobody:!!:17490::::::
+sshd:!!:17490::::::
+dbus:!!:17490::::::
+ec2-user:!!:17493:0:99999:7:::
+nagendra:1741049991:17493:0:99999:7:::
+[root@ip-172-31-73-240 ~]# openssl password -1 -salt nagendra test@123
+openssl:Error: 'password' is an invalid command.
+
+Standard commands
+asn1parse         ca                ciphers           cms
+crl               crl2pkcs7         dgst              dh
+dhparam           dsa               dsaparam          ec
+ecparam           enc               engine            errstr
+gendh             gendsa            genpkey           genrsa
+nseq              ocsp              passwd            pkcs12
+pkcs7             pkcs8             pkey              pkeyparam
+pkeyutl           prime             rand              req
+rsa               rsautl            s_client          s_server
+s_time            sess_id           smime             speed
+spkac             ts                verify            version
+x509
+
+Message Digest commands (see the `dgst' command for more details)
+md2               md4               md5               rmd160
+sha               sha1
+
+Cipher commands (see the `enc' command for more details)
+aes-128-cbc       aes-128-ecb       aes-192-cbc       aes-192-ecb
+aes-256-cbc       aes-256-ecb       base64            bf
+bf-cbc            bf-cfb            bf-ecb            bf-ofb
+camellia-128-cbc  camellia-128-ecb  camellia-192-cbc  camellia-192-ecb
+camellia-256-cbc  camellia-256-ecb  cast              cast-cbc
+cast5-cbc         cast5-cfb         cast5-ecb         cast5-ofb
+des               des-cbc           des-cfb           des-ecb
+des-ede           des-ede-cbc       des-ede-cfb       des-ede-ofb
+des-ede3          des-ede3-cbc      des-ede3-cfb      des-ede3-ofb
+des-ofb           des3              desx              idea
+idea-cbc          idea-cfb          idea-ecb          idea-ofb
+rc2               rc2-40-cbc        rc2-64-cbc        rc2-cbc
+rc2-cfb           rc2-ecb           rc2-ofb           rc4
+rc4-40            rc5               rc5-cbc           rc5-cfb
+rc5-ecb           rc5-ofb           seed              seed-cbc
+seed-cfb          seed-ecb          seed-ofb          zlib
+
+[root@ip-172-31-73-240 ~]# openssl passwd -1 -salt nagendra test@123
+$1$nagendra$nWUBJylE6FWd2gn075H.X1
+[root@ip-172-31-73-240 ~]# ls
+pass.yml  play2.yml  play3.yml  play.retry  play.yml
+[root@ip-172-31-73-240 ~]# openssl passwd -1 -salt nagendra test@123
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key"
+Last login: Thu Nov 23 08:48:34 2017 from 103.42.84.2
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/
+[ec2-user@ip-172-31-73-240 ~]$ sudo -i
+[root@ip-172-31-73-240 ~]# ls
+pass.yml  play2.yml  play3.yml  play.retry  play.yml
+[root@ip-172-31-73-240 ~]# cat play.yml
+
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       user: name=nagendra uid=566 group=root
+
+[root@ip-172-31-73-240 ~]# cat play5.yml
+cat: play5.yml: No such file or directory
+[root@ip-172-31-73-240 ~]# ls
+pass.yml  play2.yml  play3.yml  play.retry  play.yml
+[root@ip-172-31-73-240 ~]# vi play3.yml
+[root@ip-172-31-73-240 ~]# vi pass.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook pass.yml
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [To create user and password] *************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# ansible-vault pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# export EDITOR=vim
+[root@ip-172-31-73-240 ~]# ansible-vault editor pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# ansible-vault encrpyt pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# ansible-vault encrpyt pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# ansible-vault encrpyt pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# ansible-askvault-pass encrpyt pass.yml
+-bash: ansible-askvault-pass: command not found
+[root@ip-172-31-73-240 ~]# ansible-ask-vault-pass encrpyt pass.yml
+-bash: ansible-ask-vault-pass: command not found
+[root@ip-172-31-73-240 ~]# ansible-vault create pass.yml
+New Vault password:
+Confirm New Vault password:
+ERROR! pass.yml exists, please use 'edit' instead
+[root@ip-172-31-73-240 ~]# ansible-vault create edit pass.yml
+New Vault password:
+Confirm New Vault password:
+Usage: ansible-vault create [options] file_name
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! ansible-vault create can take only one filename argument
+[root@ip-172-31-73-240 ~]# ansible-vault create encrypt pass.yml
+New Vault password:
+Confirm New Vault password:
+Usage: ansible-vault create [options] file_name
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! ansible-vault create can take only one filename argument
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt pass.yml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt play2.yml
+New Vault password:
+Confirm New Vault password:
+ [WARNING]: Error in vault password prompt (default): Passwords do not match
+
+ERROR! Passwords do not match
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt play2.yml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+[root@ip-172-31-73-240 ~]# vi play2.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play2.yml
+ERROR! Attempting to decrypt but no vault secrets found
+[root@ip-172-31-73-240 ~]# ansible-vault  decrypt play2.yml
+Vault password:
+ERROR! Decryption failed (no vault secrets would found that could decrypt) on /root/play2.yml for /root/play2.yml
+[root@ip-172-31-73-240 ~]# ansible-vault  decrypt play2.yml
+Vault password:
+Decryption successful
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt play2.yml
+New Vault password:
+Confirm New Vault password:
+ [WARNING]: Error in vault password prompt (default): Passwords do not match
+
+ERROR! Passwords do not match
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt play2.yml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt edit play2.yml
+New Vault password:
+Confirm New Vault password:
+ERROR! [Errno 2] No such file or directory: u'/root/edit'
+[root@ip-172-31-73-240 ~]# ansible-vault   edit play2.yml
+Vault password:
+[root@ip-172-31-73-240 ~]# ansible-vault view play2.yml
+Vault password:
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       user: name=nagendra state=absent
+
+[root@ip-172-31-73-240 ~]# ansible-vault create play2.yml
+New Vault password:
+Confirm New Vault password:
+ERROR! play2.yml exists, please use 'edit' instead
+[root@ip-172-31-73-240 ~]# ansible-vault create play6.yml
+New Vault password:
+Confirm New Vault password:
+[root@ip-172-31-73-240 ~]# ansible-vault decrypt play6.yml
+Vault password:
+Decryption successful
+[root@ip-172-31-73-240 ~]# ansible-playbook play6.yml
+
+PLAY [dev] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.89.211.80]
+
+TASK [To in httpd package] *********************************************************************************************************************************************
+fatal: [54.89.211.80]: FAILED! => {"failed": true, "msg": "The task includes an option with an undefined variable. The error was: 'item' is undefined\n\nThe error appears to have been in '/root/play6.yml': line 6, column 8, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n   tasks:\n     - name: To in httpd package\n       ^ here\n\nexception type: <class 'ansible.errors.AnsibleUndefinedVariable'>\nexception: 'item' is undefined"}
+fatal: [localhost]: FAILED! => {"failed": true, "msg": "The task includes an option with an undefined variable. The error was: 'item' is undefined\n\nThe error appears to have been in '/root/play6.yml': line 6, column 8, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n   tasks:\n     - name: To in httpd package\n       ^ here\n\nexception type: <class 'ansible.errors.AnsibleUndefinedVariable'>\nexception: 'item' is undefined"}
+        to retry, use: --limit @/root/play6.retry
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.89.211.80               : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+[root@ip-172-31-73-240 ~]# ansible-playbook play6.yml  --syntax-check
+
+playbook: play6.yml
+[root@ip-172-31-73-240 ~]# vi play6.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play6.yml  --syntax-check
+
+playbook: play6.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play6.yml
+
+PLAY [dev] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.89.211.80]
+
+TASK [To in httpd package] *********************************************************************************************************************************************
+fatal: [54.89.211.80]: FAILED! => {"changed": false, "failed": true, "msg": "python2 bindings for rpm are needed for this module. python2 yum module is needed for this  module"}
+changed: [localhost]
+
+TASK [To install multiple packages] ************************************************************************************************************************************
+changed: [localhost] => (item=[u'php-xml', u'php', u'php-zip', u'php-mbstring', u'php-mysqlnd', u'php-gd'])
+        to retry, use: --limit @/root/play6.retry
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.89.211.80               : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=3    changed=2    unreachable=0    failed=0
+
+
+
+
+
+
+output:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key"
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/
+[ec2-user@ip-172-31-73-240 ~]$ sudo -i
+[root@ip-172-31-73-240 ~]# clear
+[root@ip-172-31-73-240 ~]# yum --enablerepo=epel -y install ansible openssh-clie                                                                                        nts
+Loaded plugins: priorities, update-motd, upgrade-helper
+epel/x86_64/metalink                                     |  17 kB     00:00
+epel                                                     | 4.7 kB     00:00
+(1/3): epel/x86_64/group_gz                                | 255 kB   00:00
+(2/3): epel/x86_64/updateinfo                              | 755 kB   00:00
+(3/3): epel/x86_64/primary_db                              | 6.0 MB   00:06
+1039 packages excluded due to repository priority protections
+Package openssh-clients-7.4p1-11.68.amzn1.x86_64 already installed and latest ve                                                                                        rsion
+Resolving Dependencies
+--> Running transaction check
+---> Package ansible.noarch 0:2.4.1.0-2.el6 will be installed
+--> Processing Dependency: python(abi) = 2.6 for package: ansible-2.4.1.0-2.el6.                                                                                        noarch
+--> Processing Dependency: /usr/bin/python2.6 for package: ansible-2.4.1.0-2.el6                                                                                        .noarch
+--> Processing Dependency: PyYAML for package: ansible-2.4.1.0-2.el6.noarch
+--> Processing Dependency: python-crypto for package: ansible-2.4.1.0-2.el6.noar                                                                                        ch
+--> Processing Dependency: python-crypto2.6 for package: ansible-2.4.1.0-2.el6.n                                                                                        oarch
+--> Processing Dependency: python-httplib2 for package: ansible-2.4.1.0-2.el6.no                                                                                        arch
+--> Processing Dependency: python-jinja2-26 for package: ansible-2.4.1.0-2.el6.n                                                                                        oarch
+--> Processing Dependency: python-keyczar for package: ansible-2.4.1.0-2.el6.noa                                                                                        rch
+--> Processing Dependency: python-paramiko for package: ansible-2.4.1.0-2.el6.no                                                                                        arch
+--> Processing Dependency: python-setuptools for package: ansible-2.4.1.0-2.el6.                                                                                        noarch
+--> Processing Dependency: python-simplejson for package: ansible-2.4.1.0-2.el6.                                                                                        noarch
+--> Processing Dependency: python-six for package: ansible-2.4.1.0-2.el6.noarch
+--> Processing Dependency: sshpass for package: ansible-2.4.1.0-2.el6.noarch
+--> Running transaction check
+---> Package python-crypto2.6.x86_64 0:2.6.1-2.el6 will be installed
+--> Processing Dependency: libpython2.6.so.1.0()(64bit) for package: python-cryp                                                                                        to2.6-2.6.1-2.el6.x86_64
+---> Package python-jinja2-26.noarch 0:2.6-3.el6 will be installed
+--> Processing Dependency: python-babel >= 0.8 for package: python-jinja2-26-2.6                                                                                        -3.el6.noarch
+--> Processing Dependency: python-markupsafe for package: python-jinja2-26-2.6-3                                                                                        .el6.noarch
+---> Package python-keyczar.noarch 0:0.71c-1.el6 will be installed
+--> Processing Dependency: python-pyasn1 for package: python-keyczar-0.71c-1.el6                                                                                        .noarch
+---> Package python26.x86_64 0:2.6.9-2.89.amzn1 will be installed
+---> Package python26-PyYAML.x86_64 0:3.10-3.10.amzn1 will be installed
+---> Package python26-crypto.x86_64 0:2.6.1-1.14.amzn1 will be installed
+---> Package python26-httplib2.noarch 0:0.7.7-1.5.amzn1 will be installed
+---> Package python26-paramiko.noarch 0:1.15.1-1.5.amzn1 will be installed
+--> Processing Dependency: python26-ecdsa for package: python26-paramiko-1.15.1-                                                                                        1.5.amzn1.noarch
+---> Package python26-setuptools.noarch 0:36.2.7-1.33.amzn1 will be installed
+--> Processing Dependency: python26-backports-ssl_match_hostname for package: py                                                                                        thon26-setuptools-36.2.7-1.33.amzn1.noarch
+---> Package python26-simplejson.x86_64 0:3.6.5-1.12.amzn1 will be installed
+---> Package python26-six.noarch 0:1.8.0-1.23.amzn1 will be installed
+---> Package sshpass.x86_64 0:1.06-1.el6 will be installed
+--> Running transaction check
+---> Package python26-babel.noarch 0:0.9.4-5.1.8.amzn1 will be installed
+---> Package python26-backports-ssl_match_hostname.noarch 0:3.4.0.2-1.12.amzn1 w                                                                                        ill be installed
+--> Processing Dependency: python26-backports for package: python26-backports-ss                                                                                        l_match_hostname-3.4.0.2-1.12.amzn1.noarch
+---> Package python26-ecdsa.noarch 0:0.11-3.3.amzn1 will be installed
+---> Package python26-libs.x86_64 0:2.6.9-2.89.amzn1 will be installed
+---> Package python26-markupsafe.x86_64 0:0.11-4.6.amzn1 will be installed
+---> Package python26-pyasn1.noarch 0:0.1.7-2.9.amzn1 will be installed
+--> Running transaction check
+---> Package python26-backports.x86_64 0:1.0-3.14.amzn1 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package                           Arch   Version            Repository    Size
+================================================================================
+Installing:
+ ansible                           noarch 2.4.1.0-2.el6      epel         7.9 M
+Installing for dependencies:
+ python-crypto2.6                  x86_64 2.6.1-2.el6        epel         513 k
+ python-jinja2-26                  noarch 2.6-3.el6          epel         527 k
+ python-keyczar                    noarch 0.71c-1.el6        epel         219 k
+ python26                          x86_64 2.6.9-2.89.amzn1   amzn-updates 5.8 M
+ python26-PyYAML                   x86_64 3.10-3.10.amzn1    amzn-main    186 k
+ python26-babel                    noarch 0.9.4-5.1.8.amzn1  amzn-main    1.8 M
+ python26-backports                x86_64 1.0-3.14.amzn1     amzn-main    5.2 k
+ python26-backports-ssl_match_hostname
+                                   noarch 3.4.0.2-1.12.amzn1 amzn-main     12 k
+ python26-crypto                   x86_64 2.6.1-1.14.amzn1   amzn-main    699 k
+ python26-ecdsa                    noarch 0.11-3.3.amzn1     amzn-main     77 k
+ python26-httplib2                 noarch 0.7.7-1.5.amzn1    amzn-main     81 k
+ python26-libs                     x86_64 2.6.9-2.89.amzn1   amzn-updates 697 k
+ python26-markupsafe               x86_64 0.11-4.6.amzn1     amzn-main     27 k
+ python26-paramiko                 noarch 1.15.1-1.5.amzn1   amzn-main    1.3 M
+ python26-pyasn1                   noarch 0.1.7-2.9.amzn1    amzn-main    112 k
+ python26-setuptools               noarch 36.2.7-1.33.amzn1  amzn-main    675 k
+ python26-simplejson               x86_64 3.6.5-1.12.amzn1   amzn-main    210 k
+ python26-six                      noarch 1.8.0-1.23.amzn1   amzn-main     31 k
+ sshpass                           x86_64 1.06-1.el6         epel          20 k
+
+Transaction Summary
+================================================================================
+Install  1 Package (+19 Dependent packages)
+
+Total download size: 21 M
+Installed size: 82 M
+Downloading packages:
+warning: /var/cache/yum/x86_64/latest/epel/packages/python-jinja2-26-2.6-3.el6.n                                                                                        oarch.rpm: Header V3 RSA/SHA256 Signature, key ID 0608b895: NOKEY
+Public key for python-jinja2-26-2.6-3.el6.noarch.rpm is not installed
+(1/20): python-jinja2-26-2.6-3.el6.noarch.rpm              | 527 kB   00:00
+(2/20): python-crypto2.6-2.6.1-2.el6.x86_64.rpm            | 513 kB   00:00
+(3/20): python26-PyYAML-3.10-3.10.amzn1.x86_64.rpm         | 186 kB   00:00
+(4/20): python26-backports-1.0-3.14.amzn1.x86_64.rpm       | 5.2 kB   00:00
+(5/20): python26-babel-0.9.4-5.1.8.amzn1.noarch.rpm        | 1.8 MB   00:01
+(6/20): python26-backports-ssl_match_hostname-3.4.0.2-1.12 |  12 kB   00:00
+(7/20): python26-ecdsa-0.11-3.3.amzn1.noarch.rpm           |  77 kB   00:00
+(8/20): python26-crypto-2.6.1-1.14.amzn1.x86_64.rpm        | 699 kB   00:00
+(9/20): python26-httplib2-0.7.7-1.5.amzn1.noarch.rpm       |  81 kB   00:00
+(10/20): python26-markupsafe-0.11-4.6.amzn1.x86_64.rpm     |  27 kB   00:00
+(11/20): ansible-2.4.1.0-2.el6.noarch.rpm                  | 7.9 MB   00:02
+(12/20): python26-2.6.9-2.89.amzn1.x86_64.rpm              | 5.8 MB   00:02
+(13/20): python26-paramiko-1.15.1-1.5.amzn1.noarch.rpm     | 1.3 MB   00:00
+(14/20): python26-libs-2.6.9-2.89.amzn1.x86_64.rpm         | 697 kB   00:00
+(15/20): python26-pyasn1-0.1.7-2.9.amzn1.noarch.rpm        | 112 kB   00:00
+(16/20): python26-setuptools-36.2.7-1.33.amzn1.noarch.rpm  | 675 kB   00:00
+(17/20): python26-six-1.8.0-1.23.amzn1.noarch.rpm          |  31 kB   00:00
+(18/20): sshpass-1.06-1.el6.x86_64.rpm                     |  20 kB   00:00
+(19/20): python26-simplejson-3.6.5-1.12.amzn1.x86_64.rpm   | 210 kB   00:00
+python-keyczar-0.71c-1.el6.noa FAILED
+http://mirrors.nebo.edu/public/epel/6/x86_64/Packages/p/python-keyczar-0.71c-1.e                                                                                        l6.noarch.rpm: [Errno 12] Timeout on http://mirrors.nebo.edu/public/epel/6/x86_6                                                                                        4/Packages/p/python-keyczar-0.71c-1.el6.noarch.rpm: (28, 'Connection timed out a                                                                                        fter 5000 milliseconds')
+Trying other mirror.
+(20/20): python-keyczar-0.71c-1.el6.noarch.rpm             | 219 kB   00:00
+--------------------------------------------------------------------------------
+Total                                              3.7 MB/s |  21 MB  00:05
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+Importing GPG key 0x0608B895:
+ Userid     : "EPEL (6) <epel@fedoraproject.org>"
+ Fingerprint: 8c3b e96a f230 9184 da5c 0dae 3b49 df2a 0608 b895
+ Package    : epel-release-6-8.9.amzn1.noarch (installed)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : python26-libs-2.6.9-2.89.amzn1.x86_64                       1/20
+  Installing : python26-2.6.9-2.89.amzn1.x86_64                            2/20
+  Installing : python26-crypto-2.6.1-1.14.amzn1.x86_64                     3/20
+  Installing : python26-six-1.8.0-1.23.amzn1.noarch                        4/20
+  Installing : python26-ecdsa-0.11-3.3.amzn1.noarch                        5/20
+  Installing : python26-paramiko-1.15.1-1.5.amzn1.noarch                   6/20
+  Installing : python26-httplib2-0.7.7-1.5.amzn1.noarch                    7/20
+  Installing : python26-PyYAML-3.10-3.10.amzn1.x86_64                      8/20
+  Installing : python26-markupsafe-0.11-4.6.amzn1.x86_64                   9/20
+  Installing : python-crypto2.6-2.6.1-2.el6.x86_64                        10/20
+  Installing : python26-backports-1.0-3.14.amzn1.x86_64                   11/20
+  Installing : python26-backports-ssl_match_hostname-3.4.0.2-1.12.amzn1   12/20
+  Installing : python26-setuptools-36.2.7-1.33.amzn1.noarch               13/20
+  Installing : python26-babel-0.9.4-5.1.8.amzn1.noarch                    14/20
+  Installing : python-jinja2-26-2.6-3.el6.noarch                          15/20
+  Installing : python26-pyasn1-0.1.7-2.9.amzn1.noarch                     16/20
+  Installing : python-keyczar-0.71c-1.el6.noarch                          17/20
+  Installing : python26-simplejson-3.6.5-1.12.amzn1.x86_64                18/20
+  Installing : sshpass-1.06-1.el6.x86_64                                  19/20
+  Installing : ansible-2.4.1.0-2.el6.noarch                               20/20
+  Verifying  : python26-setuptools-36.2.7-1.33.amzn1.noarch                1/20
+  Verifying  : python26-paramiko-1.15.1-1.5.amzn1.noarch                   2/20
+  Verifying  : sshpass-1.06-1.el6.x86_64                                   3/20
+  Verifying  : python-keyczar-0.71c-1.el6.noarch                           4/20
+  Verifying  : python26-ecdsa-0.11-3.3.amzn1.noarch                        5/20
+  Verifying  : python26-babel-0.9.4-5.1.8.amzn1.noarch                     6/20
+  Verifying  : python26-httplib2-0.7.7-1.5.amzn1.noarch                    7/20
+  Verifying  : python26-PyYAML-3.10-3.10.amzn1.x86_64                      8/20
+  Verifying  : python26-backports-ssl_match_hostname-3.4.0.2-1.12.amzn1    9/20
+  Verifying  : ansible-2.4.1.0-2.el6.noarch                               10/20
+  Verifying  : python26-six-1.8.0-1.23.amzn1.noarch                       11/20
+  Verifying  : python26-markupsafe-0.11-4.6.amzn1.x86_64                  12/20
+  Verifying  : python-crypto2.6-2.6.1-2.el6.x86_64                        13/20
+  Verifying  : python26-2.6.9-2.89.amzn1.x86_64                           14/20
+  Verifying  : python26-backports-1.0-3.14.amzn1.x86_64                   15/20
+  Verifying  : python26-pyasn1-0.1.7-2.9.amzn1.noarch                     16/20
+  Verifying  : python26-crypto-2.6.1-1.14.amzn1.x86_64                    17/20
+  Verifying  : python26-libs-2.6.9-2.89.amzn1.x86_64                      18/20
+  Verifying  : python-jinja2-26-2.6-3.el6.noarch                          19/20
+  Verifying  : python26-simplejson-3.6.5-1.12.amzn1.x86_64                20/20
+
+Installed:
+  ansible.noarch 0:2.4.1.0-2.el6
+
+Dependency Installed:
+  python-crypto2.6.x86_64 0:2.6.1-2.el6
+  python-jinja2-26.noarch 0:2.6-3.el6
+  python-keyczar.noarch 0:0.71c-1.el6
+  python26.x86_64 0:2.6.9-2.89.amzn1
+  python26-PyYAML.x86_64 0:3.10-3.10.amzn1
+  python26-babel.noarch 0:0.9.4-5.1.8.amzn1
+  python26-backports.x86_64 0:1.0-3.14.amzn1
+  python26-backports-ssl_match_hostname.noarch 0:3.4.0.2-1.12.amzn1
+  python26-crypto.x86_64 0:2.6.1-1.14.amzn1
+  python26-ecdsa.noarch 0:0.11-3.3.amzn1
+  python26-httplib2.noarch 0:0.7.7-1.5.amzn1
+  python26-libs.x86_64 0:2.6.9-2.89.amzn1
+  python26-markupsafe.x86_64 0:0.11-4.6.amzn1
+  python26-paramiko.noarch 0:1.15.1-1.5.amzn1
+  python26-pyasn1.noarch 0:0.1.7-2.9.amzn1
+  python26-setuptools.noarch 0:36.2.7-1.33.amzn1
+  python26-simplejson.x86_64 0:3.6.5-1.12.amzn1
+  python26-six.noarch 0:1.8.0-1.23.amzn1
+  sshpass.x86_64 0:1.06-1.el6
+
+Complete!
+[root@ip-172-31-73-240 ~]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:VoITJ0OPuUd2iWmOsn4AZzQtr5/8mIHwsBs/UuRgOA0 root@ip-172-31-73-240
+The key's randomart image is:
++---[RSA 2048]----+
+|     o= .        |
+|E   + .X o .     |
+| + . += O +      |
+|o = + .O +       |
+| ooB..o S        |
+|   ==+ o         |
+|  o.++..         |
+|  .=. =+         |
+|  ..ooo..        |
++----[SHA256]-----+
+[root@ip-172-31-73-240 ~]# vi /root/.ssh/id_rsa.pub
+[root@ip-172-31-73-240 ~]# cat /root/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7SoDKL5JaWCb2SF8EKs2eJpxmf+e7rskVm6iz/SFWuhOiJCeIwW8fc6qaeZ61PiJNXaVdS9Xj9xmc6y8nXrlMucAV53JgfgpcmutSdQ6CYVW+dpfTw9tcu++pAmM1LVf08obStDkNOv8AlDyoNMgA7BoM6TbKjqjYS2GpZ3z5a6JaSGyQQeAlBW43qDqFPvLN+iDWUkfKnBkOv8vmoNAj/zpAMYxGft+p2p6ItKGIPHR0dJJxqM0oTj9NGi/K8HLsKaxAWBbiH67m/GXaCPwdS242MnZtz589ec5Xh24znhE/T+fV8Fk6pgy9V1UnFrOmuk1NeorGfntS8Tz9zdDf root@ip-172-31-73-240
+[root@ip-172-31-73-240 ~]# vi /etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# export ANSIBLE_HOSTS=/etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# ansible -m ping all
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+The authenticity of host '54.152.196.130 (54.152.196.130)' can't be established.
+ECDSA key fingerprint is SHA256:IUd0lKj4RspmQRBmkF9eFdRytcStZ4VU7+P0zbdVB6E.
+ECDSA key fingerprint is MD5:cf:7c:28:22:5d:f0:41:e6:22:a0:95:fe:91:96:31:1a.
+Are you sure you want to continue connecting (yes/no)? The authenticity of host '54.89.211.80 (54.89.211.80)' can't be established.
+ECDSA key fingerprint is SHA256:NAAKX0QTgl3DLAoxdl/ounSYfs8BiAXOVKhn2o/EHlU.
+ECDSA key fingerprint is MD5:c3:18:75:39:c4:b6:37:b6:fb:c7:cf:59:32:2a:eb:c5.
+Are you sure you want to continue connecting (yes/no)? The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:yyy1jgdWJRteCBUUIGU3xQ+XejXZFSycysKIzWX21uk.
+ECDSA key fingerprint is MD5:d4:72:2d:89:28:cd:fc:be:92:71:14:4e:a7:d9:f3:77.
+Are you sure you want to continue connecting (yes/no)? yes
+54.152.196.130 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+
+54.89.211.80 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+
+localhost | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+[root@ip-172-31-73-240 ~]# ansible -m ping all  -vv
+ansible 2.4.1.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.6/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.6.9 (unknown, Nov  2 2017, 19:21:21) [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)]
+Using /etc/ansible/ansible.cfg as config file
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+META: ran handlers
+The authenticity of host '54.89.211.80 (54.89.211.80)' can't be established.
+ECDSA key fingerprint is SHA256:NAAKX0QTgl3DLAoxdl/ounSYfs8BiAXOVKhn2o/EHlU.
+ECDSA key fingerprint is MD5:c3:18:75:39:c4:b6:37:b6:fb:c7:cf:59:32:2a:eb:c5.
+Are you sure you want to continue connecting (yes/no)? The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:yyy1jgdWJRteCBUUIGU3xQ+XejXZFSycysKIzWX21uk.
+ECDSA key fingerprint is MD5:d4:72:2d:89:28:cd:fc:be:92:71:14:4e:a7:d9:f3:77.
+Are you sure you want to continue connecting (yes/no)? 54.152.196.130 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+
+54.89.211.80 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+
+localhost | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+META: ran handlers
+META: ran handlers
+[root@ip-172-31-73-240 ~]# export ANSIBLE_HOSTS=/etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# vi /etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# ansible -m ping all  -vv
+ansible 2.4.1.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.6/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.6.9 (unknown, Nov  2 2017, 19:21:21) [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)]
+Using /etc/ansible/ansible.cfg as config file
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+META: ran handlers
+The authenticity of host '54.89.211.80 (54.89.211.80)' can't be established.
+ECDSA key fingerprint is SHA256:NAAKX0QTgl3DLAoxdl/ounSYfs8BiAXOVKhn2o/EHlU.
+ECDSA key fingerprint is MD5:c3:18:75:39:c4:b6:37:b6:fb:c7:cf:59:32:2a:eb:c5.
+Are you sure you want to continue connecting (yes/no)? localhost | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+54.152.196.130 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+
+54.89.211.80 | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.\r\n",
+    "unreachable": true
+}
+META: ran handlers
+META: ran handlers
+[root@ip-172-31-73-240 ~]# ssh root@54.152.182.246
+The authenticity of host '54.152.182.246 (54.152.182.246)' can't be established.
+ECDSA key fingerprint is SHA256:yyy1jgdWJRteCBUUIGU3xQ+XejXZFSycysKIzWX21uk.
+ECDSA key fingerprint is MD5:d4:72:2d:89:28:cd:fc:be:92:71:14:4e:a7:d9:f3:77.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '54.152.182.246' (ECDSA) to the list of known hosts.
+Permission denied (publickey).
+[root@ip-172-31-73-240 ~]# ssh root@54.152.182.246
+Permission denied (publickey).
+[root@ip-172-31-73-240 ~]# 54.89.211.80
+-bash: 54.89.211.80: command not found
+[root@ip-172-31-73-240 ~]# ssh root@54.89.211.80
+The authenticity of host '54.89.211.80 (54.89.211.80)' can't be established.
+ECDSA key fingerprint is SHA256:NAAKX0QTgl3DLAoxdl/ounSYfs8BiAXOVKhn2o/EHlU.
+ECDSA key fingerprint is MD5:c3:18:75:39:c4:b6:37:b6:fb:c7:cf:59:32:2a:eb:c5.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '54.89.211.80' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-1038-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+root@ip-172-31-68-34:~# exit
+logout
+Connection to 54.89.211.80 closed.
+[root@ip-172-31-73-240 ~]# vi /etc/ansible/hosts
+[root@ip-172-31-73-240 ~]# ansible -m ping all  -vv
+ansible 2.4.1.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.6/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.6.9 (unknown, Nov  2 2017, 19:21:21) [GCC 4.8.5 20150623 (Red Hat 4.8.5-11)]
+Using /etc/ansible/ansible.cfg as config file
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+META: ran handlers
+localhost | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+54.152.196.130 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+54.89.211.80 | SUCCESS => {
+    "changed": false,
+    "failed": false,
+    "ping": "pong"
+}
+META: ran handlers
+META: ran handlers
+[root@ip-172-31-73-240 ~]# vi play.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it
+can be a list of hosts and/or paths to inventory sources . This feature will be
+ removed in version 2.8. Deprecation warnings can be disabled by setting
+deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **********************************************************
+fatal: [54.89.211.80]: FAILED! => {"changed": false, "failed": true, "msg": "Gro                                                                                        up nagendra does not exist"}
+fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "Group                                                                                         nagendra does not exist"}
+fatal: [54.152.196.130]: FAILED! => {"changed": false, "failed": true, "msg": "G                                                                                        roup nagendra does not exist"}
+        to retry, use: --limit @/root/play.retry
+
+PLAY RECAP *********************************************************************
+54.152.196.130             : ok=1    changed=0    unreachable=0    failed=1
+54.89.211.80               : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+[root@ip-172-31-73-240 ~]# vi play.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **************************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# cat play.yml
+
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       user: name=nagendra uid=566 group=root
+
+[root@ip-172-31-73-240 ~]# vu play2.yml
+-bash: vu: command not found
+[root@ip-172-31-73-240 ~]# vi play2.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play2.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **************************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# cp play2.yml play3.yml
+[root@ip-172-31-73-240 ~]# vi play3.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play3.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [TO create user] **************************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# cat /etc/group
+root:x:0:
+bin:x:1:bin,daemon
+daemon:x:2:bin,daemon
+sys:x:3:bin,adm
+adm:x:4:adm,daemon
+tty:x:5:
+disk:x:6:
+lp:x:7:daemon
+mem:x:8:
+kmem:x:9:
+wheel:x:10:ec2-user
+mail:x:12:mail
+uucp:x:14:
+man:x:15:
+games:x:20:
+gopher:x:30:
+video:x:39:
+dip:x:40:
+ftp:x:50:
+lock:x:54:
+audio:x:63:
+nobody:x:99:
+users:x:100:
+utmp:x:22:
+utempter:x:35:
+rpc:x:32:
+cdrom:x:11:
+tape:x:33:
+dialout:x:18:
+floppy:x:19:
+ssh_keys:x:499:
+cgred:x:498:
+ntp:x:38:
+saslauth:x:76:
+mailnull:x:47:
+smmsp:x:51:
+rpcuser:x:29:
+nfsnobody:x:65534:
+sshd:x:74:
+dbus:x:81:
+screen:x:84:
+ec2-user:x:500:
+nagendra:x:501:
+[root@ip-172-31-73-240 ~]# cat play3.yml
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       group: name=nagendra  state=present
+
+[root@ip-172-31-73-240 ~]# vi pass.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook pass.yml
+[DEPRECATION WARNING]: ANSIBLE_HOSTS option, The variable is misleading as it can be a list of hosts and/or paths to inventory sources . This feature will be removed
+in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [To create user and password] *************************************************************************************************************************************
+changed: [localhost]
+changed: [54.89.211.80]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# cat pass.yml
+
+
+---
+ - hosts: all
+   user: root
+   vars:
+     password: 1741049991
+   tasks:
+     - name: To create user and password
+       user: name=nagendra password={{password}}
+[root@ip-172-31-73-240 ~]# cat /etc/shadow
+root:*LOCK*:14600::::::
+bin:*:16323:0:99999:7:::
+daemon:*:16323:0:99999:7:::
+adm:*:16323:0:99999:7:::
+lp:*:16323:0:99999:7:::
+sync:*:16323:0:99999:7:::
+shutdown:*:16323:0:99999:7:::
+halt:*:16323:0:99999:7:::
+mail:*:16323:0:99999:7:::
+uucp:*:16323:0:99999:7:::
+operator:*:16323:0:99999:7:::
+games:*:16323:0:99999:7:::
+gopher:*:16323:0:99999:7:::
+ftp:*:16323:0:99999:7:::
+nobody:*:16323:0:99999:7:::
+rpc:!!:17490:0:99999:7:::
+ntp:!!:17490::::::
+saslauth:!!:17490::::::
+mailnull:!!:17490::::::
+smmsp:!!:17490::::::
+rpcuser:!!:17490::::::
+nfsnobody:!!:17490::::::
+sshd:!!:17490::::::
+dbus:!!:17490::::::
+ec2-user:!!:17493:0:99999:7:::
+nagendra:1741049991:17493:0:99999:7:::
+[root@ip-172-31-73-240 ~]# openssl password -1 -salt nagendra test@123
+openssl:Error: 'password' is an invalid command.
+
+Standard commands
+asn1parse         ca                ciphers           cms
+crl               crl2pkcs7         dgst              dh
+dhparam           dsa               dsaparam          ec
+ecparam           enc               engine            errstr
+gendh             gendsa            genpkey           genrsa
+nseq              ocsp              passwd            pkcs12
+pkcs7             pkcs8             pkey              pkeyparam
+pkeyutl           prime             rand              req
+rsa               rsautl            s_client          s_server
+s_time            sess_id           smime             speed
+spkac             ts                verify            version
+x509
+
+Message Digest commands (see the `dgst' command for more details)
+md2               md4               md5               rmd160
+sha               sha1
+
+Cipher commands (see the `enc' command for more details)
+aes-128-cbc       aes-128-ecb       aes-192-cbc       aes-192-ecb
+aes-256-cbc       aes-256-ecb       base64            bf
+bf-cbc            bf-cfb            bf-ecb            bf-ofb
+camellia-128-cbc  camellia-128-ecb  camellia-192-cbc  camellia-192-ecb
+camellia-256-cbc  camellia-256-ecb  cast              cast-cbc
+cast5-cbc         cast5-cfb         cast5-ecb         cast5-ofb
+des               des-cbc           des-cfb           des-ecb
+des-ede           des-ede-cbc       des-ede-cfb       des-ede-ofb
+des-ede3          des-ede3-cbc      des-ede3-cfb      des-ede3-ofb
+des-ofb           des3              desx              idea
+idea-cbc          idea-cfb          idea-ecb          idea-ofb
+rc2               rc2-40-cbc        rc2-64-cbc        rc2-cbc
+rc2-cfb           rc2-ecb           rc2-ofb           rc4
+rc4-40            rc5               rc5-cbc           rc5-cfb
+rc5-ecb           rc5-ofb           seed              seed-cbc
+seed-cfb          seed-ecb          seed-ofb          zlib
+
+[root@ip-172-31-73-240 ~]# openssl passwd -1 -salt nagendra test@123
+$1$nagendra$nWUBJylE6FWd2gn075H.X1
+[root@ip-172-31-73-240 ~]# ls
+pass.yml  play2.yml  play3.yml  play.retry  play.yml
+[root@ip-172-31-73-240 ~]# openssl passwd -1 -salt nagendra test@123
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key"
+Last login: Thu Nov 23 08:48:34 2017 from 103.42.84.2
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-ami/2017.09-release-notes/
+[ec2-user@ip-172-31-73-240 ~]$ sudo -i
+[root@ip-172-31-73-240 ~]# ls
+pass.yml  play2.yml  play3.yml  play.retry  play.yml
+[root@ip-172-31-73-240 ~]# cat play.yml
+
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       user: name=nagendra uid=566 group=root
+
+[root@ip-172-31-73-240 ~]# cat play5.yml
+cat: play5.yml: No such file or directory
+[root@ip-172-31-73-240 ~]# ls
+pass.yml  play2.yml  play3.yml  play.retry  play.yml
+[root@ip-172-31-73-240 ~]# vi play3.yml
+[root@ip-172-31-73-240 ~]# vi pass.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook pass.yml
+
+PLAY [all] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.152.196.130]
+ok: [54.89.211.80]
+
+TASK [To create user and password] *************************************************************************************************************************************
+changed: [54.89.211.80]
+changed: [localhost]
+changed: [54.152.196.130]
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.152.196.130             : ok=2    changed=1    unreachable=0    failed=0
+54.89.211.80               : ok=2    changed=1    unreachable=0    failed=0
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+[root@ip-172-31-73-240 ~]# ansible-vault pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# export EDITOR=vim
+[root@ip-172-31-73-240 ~]# ansible-vault editor pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# ansible-vault encrpyt pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# ansible-vault encrpyt pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# ansible-vault encrpyt pass.yml
+Usage: ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [options] [vaultfile.yml]
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! Missing required action
+[root@ip-172-31-73-240 ~]# ansible-askvault-pass encrpyt pass.yml
+-bash: ansible-askvault-pass: command not found
+[root@ip-172-31-73-240 ~]# ansible-ask-vault-pass encrpyt pass.yml
+-bash: ansible-ask-vault-pass: command not found
+[root@ip-172-31-73-240 ~]# ansible-vault create pass.yml
+New Vault password:
+Confirm New Vault password:
+ERROR! pass.yml exists, please use 'edit' instead
+[root@ip-172-31-73-240 ~]# ansible-vault create edit pass.yml
+New Vault password:
+Confirm New Vault password:
+Usage: ansible-vault create [options] file_name
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! ansible-vault create can take only one filename argument
+[root@ip-172-31-73-240 ~]# ansible-vault create encrypt pass.yml
+New Vault password:
+Confirm New Vault password:
+Usage: ansible-vault create [options] file_name
+
+encryption/decryption utility for Ansible data files
+
+Options:
+  --ask-vault-pass      ask for vault password
+  -h, --help            show this help message and exit
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+ See 'ansible-vault <command> --help' for more information on a specific
+command.
+ERROR! ansible-vault create can take only one filename argument
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt pass.yml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt play2.yml
+New Vault password:
+Confirm New Vault password:
+ [WARNING]: Error in vault password prompt (default): Passwords do not match
+
+ERROR! Passwords do not match
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt play2.yml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+[root@ip-172-31-73-240 ~]# vi play2.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play2.yml
+ERROR! Attempting to decrypt but no vault secrets found
+[root@ip-172-31-73-240 ~]# ansible-vault  decrypt play2.yml
+Vault password:
+ERROR! Decryption failed (no vault secrets would found that could decrypt) on /root/play2.yml for /root/play2.yml
+[root@ip-172-31-73-240 ~]# ansible-vault  decrypt play2.yml
+Vault password:
+Decryption successful
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt play2.yml
+New Vault password:
+Confirm New Vault password:
+ [WARNING]: Error in vault password prompt (default): Passwords do not match
+
+ERROR! Passwords do not match
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt play2.yml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+[root@ip-172-31-73-240 ~]# ansible-vault  encrypt edit play2.yml
+New Vault password:
+Confirm New Vault password:
+ERROR! [Errno 2] No such file or directory: u'/root/edit'
+[root@ip-172-31-73-240 ~]# ansible-vault   edit play2.yml
+Vault password:
+[root@ip-172-31-73-240 ~]# ansible-vault view play2.yml
+Vault password:
+
+---
+ - hosts: all
+   tasks:
+
+     - name: TO create user
+       user: name=nagendra state=absent
+
+[root@ip-172-31-73-240 ~]# ansible-vault create play2.yml
+New Vault password:
+Confirm New Vault password:
+ERROR! play2.yml exists, please use 'edit' instead
+[root@ip-172-31-73-240 ~]# ansible-vault create play6.yml
+New Vault password:
+Confirm New Vault password:
+[root@ip-172-31-73-240 ~]# ansible-vault decrypt play6.yml
+Vault password:
+Decryption successful
+[root@ip-172-31-73-240 ~]# ansible-playbook play6.yml
+
+PLAY [dev] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.89.211.80]
+
+TASK [To in httpd package] *********************************************************************************************************************************************
+fatal: [54.89.211.80]: FAILED! => {"failed": true, "msg": "The task includes an option with an undefined variable. The error was: 'item' is undefined\n\nThe error appears to have been in '/root/play6.yml': line 6, column 8, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n   tasks:\n     - name: To in httpd package\n       ^ here\n\nexception type: <class 'ansible.errors.AnsibleUndefinedVariable'>\nexception: 'item' is undefined"}
+fatal: [localhost]: FAILED! => {"failed": true, "msg": "The task includes an option with an undefined variable. The error was: 'item' is undefined\n\nThe error appears to have been in '/root/play6.yml': line 6, column 8, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n   tasks:\n     - name: To in httpd package\n       ^ here\n\nexception type: <class 'ansible.errors.AnsibleUndefinedVariable'>\nexception: 'item' is undefined"}
+        to retry, use: --limit @/root/play6.retry
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.89.211.80               : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=1    changed=0    unreachable=0    failed=1
+
+[root@ip-172-31-73-240 ~]# ansible-playbook play6.yml  --syntax-check
+
+playbook: play6.yml
+[root@ip-172-31-73-240 ~]# vi play6.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play6.yml  --syntax-check
+
+playbook: play6.yml
+[root@ip-172-31-73-240 ~]# ansible-playbook play6.yml
+
+PLAY [dev] *************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [localhost]
+ok: [54.89.211.80]
+
+TASK [To in httpd package] *********************************************************************************************************************************************
+fatal: [54.89.211.80]: FAILED! => {"changed": false, "failed": true, "msg": "python2 bindings for rpm are needed for this module. python2 yum module is needed for this  module"}
+changed: [localhost]
+
+TASK [To install multiple packages] ************************************************************************************************************************************
+changed: [localhost] => (item=[u'php-xml', u'php', u'php-zip', u'php-mbstring', u'php-mysqlnd', u'php-gd'])
+        to retry, use: --limit @/root/play6.retry
+
+PLAY RECAP *************************************************************************************************************************************************************
+54.89.211.80               : ok=1    changed=0    unreachable=0    failed=1
+localhost                  : ok=3    changed=2    unreachable=0    failed=0
+
