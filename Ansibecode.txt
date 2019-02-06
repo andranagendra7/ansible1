@@ -106,7 +106,7 @@ varibles passing:
  - hosts: all
    user: root
    vars:
-     password: 1741049991
+     password: << >> 
    tasks:
      - name: To create user and password
        user: name=nagendra password={{password}}
