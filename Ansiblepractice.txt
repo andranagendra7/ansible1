@@ -97,7 +97,9 @@ service sshd restart
 
 4) To install python package on all remote machine's
 
-yum install -y python 
+yum install -y python  if platform is centos
+
+
 
 
 
