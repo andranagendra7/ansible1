@@ -1,28 +1,18 @@
 Ansible roles:
 
 step 1: first we create a role playbook
-
-
 vi role.yml
-
 ---
  - hosts: all
    roles:
    - httpd
    - nginx
 
-
 step 2: we create a roles directory
-
-
 mkdir roles
 
 cd roles
-
 step 3: now we create 
-
-
-
 
 
 ---
