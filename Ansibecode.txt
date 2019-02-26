@@ -1,17 +1,13 @@
 ansible code:
 
-root@ip-172-31-73-183:~/playbook# cat file.yml p2.yml p3.yml
-
-
 Task 1: To create a file
 
 ---
   - hosts: all
     tasks:
-    - name: TO create a file
+    - name: To create a file
       file:
         path: /tmp/nag
-   
         state: touch
 
 task 2:
@@ -30,12 +26,12 @@ task 3:
 ---
  - hosts: all
    tasks:
-    - file:
-       path: /etc/kelly
-       state: directory
-       owner: root
-       group: root
-       mode: 0644
+     - file:
+         path: /etc/<< >>
+         state: directory
+         owner: root
+         group: root
+         mode: 0644
 
 task 4:
 
@@ -49,7 +45,7 @@ vi nginx.yml
  
  - hosts: all
    tasks:
-     - name: Installs nginx web server
+     - name: Install  the nginx web server
        apt: pkg=nginx state=installed update_cache=true
        notify:
          - start nginx
@@ -64,7 +60,7 @@ task 5:
 To remove the package:
 
 ---
- - hosts: dev
+ - hosts: dev-->host group name
    tasks:
     - name: To  remove a package
       apt: pkg=apache2 state=absent
@@ -85,7 +81,7 @@ task 7:
  - hosts: all
    tasks:
 
-     - name: TO delete  a user
+     - name: To delete  a user
        user: name=nagendra state=absent
   
 
@@ -95,7 +91,7 @@ task 8: To create a group
  - hosts: all
    tasks:
 
-     - name: TO create user
+     - name: To create user
        group: name=nagendra  state=present
 
 task 9: user create and password
@@ -110,9 +106,6 @@ varibles passing:
    tasks:
      - name: To create user and password
        user: name=nagendra password={{password}}
-
-
-
 
 task 10:
 
@@ -135,12 +128,7 @@ To install the package by using loops
          - php-mysqlnd
          - php-gd
 
-
-
-
 task 11:
-
-
 ---
  - hosts: web
    tasks:
@@ -184,7 +172,7 @@ task 12:
   6      - name: To  install a package
   7
   8        apt: pkg=apache2 state=installed
-  9      - name: TO start the package
+  9      - name: To start the service
  10        service: name=apache2 state=running
  11      - name: to copy file
  12        copy: src=/root/playbook/index.html dest=/var/www/html
