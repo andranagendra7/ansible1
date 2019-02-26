@@ -1,49 +1,41 @@
 										Ansible:
 									      ============
-
-
 Ansible setup :
 ===============
-
-
 Ansible installation on ubuntu:
 =============================
+step 1: update the packages
 
-step 1:
-
- sudo apt-get update
+>> sudo apt-get update
 
 step 2: now we install python
 
-
- apt-get install python -y
+>> apt-get install python -y
 
 step 3:
 
-apt-get install software-properties-common -y
+>> apt-get install software-properties-common -y
 
 step 4:
 
-sudo apt-add-repository ppa:ansible/ansible
+>> sudo apt-add-repository ppa:ansible/ansible
 
 step 5:
 
-apt-get upate
+>> apt-get upate
 
 step 6:
 
-apt-get install -y ansible 
+>> apt-get install -y ansible 
 
-step1 : first of all, we generate ssh key
+step1 : First of all, we generate ssh key
 =====
 
 >> ssh-keygen
 
 3 enter's
 
-step 2:
-
-now copy ssh public key:
+step 2: Now copy ssh public key:
 
 cd /root/.shh
 
@@ -54,7 +46,7 @@ cd /root/.shh
 Ansible installation on  Centos:
 ===============================
 
-step1 : first of all, now we  generate ssh key on  ansible hostmachine
+step1 : First of all, now we  generate ssh key on  ansible hostmachine
 
 
 >> ssh-keygen
@@ -74,17 +66,15 @@ step 3: To install ansible package and Configure host machine
 
 
 >>>> yum install --enablerepo=epel -y install ansible openssh-clients
+\
 
+>> amazon-linux-extras install ansible2 --> to install the ansible on aws linux
 
 >> ansible --version
 
-
 step 2: now we  generate ssh key at ansible hostmachine
 
-
 ssh-keygen
-
-
 
 step 3: To add remotemachine's ip inside ansible inventory file:
 
@@ -118,26 +108,16 @@ step 2: ssh_config file we have modify
 
 vi /etc/ssh/sshd_config
 
-
 #PermitRootLogin yes --->default we have to un comment this line
-
-
 PermitRootLogin yes
 
-
 PasswordAuthentication yes -----> default we have to un comment this line
-
 PasswordAuthentication yes
 
 3) now we restart sshd service
 
 service sshd restart
-
-
-
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
 
 ansible commands:
 -----------------
@@ -311,12 +291,7 @@ correct:
 
 
 
-=======================================================================================================================================================================
-
-
-
-
-
+=======================================================================================================================================
 
 Remote machine:
 ===============
@@ -342,7 +317,7 @@ PasswordAuthentication yes
 
 PasswordAuthentication yes
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
 
 
 To check Linux machine version:
