@@ -2,23 +2,21 @@
 Ansible commands:
 =================
 
-ansible --version    ---> TO check ansible version
-
+ansible --version                   ---> TO check ansible version
   
-ansible -m ping all  ---> To test the connection host machine to remote machine's
+ansible -m ping all                 ---> To test the connection host machine to remote machine's
  
+ansible -m ping [ groupname ]       ---> To test the connection host machine to perticualr remote machine's
 
-ansible -m ping [ groupname ]      -----> To test the connection host machine to perticualr remote machine's
+ansible [group name] -m ping        ---> To test the connection host machine to remote machine's
 
-ansible [group name] -m ping       ------> To test the connection host machine to remote machine's
-
-ansible-playbook playbookname.yml  ------> To execute playbook 
+ansible-playbook playbookname.yml   ---> To execute playbook 
 
 
 ansible-playbook playbookname.yml --syntax-check ----> To check playbook syntax
 
 
-ansible-playbook p3.yml -vvv ---> To give full details of excution process
+ansible-playbook p3.yml -vvv        ---> To give full details of excution process
  
 
 ansible-playbook p3.yml -vvvv
@@ -73,35 +71,6 @@ ansible -m service web -a "name=httpd state=running" ----> To start the httpd se
 
 
  running,started,stopped,restarted,reloaded, got: start
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
